@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "116367892117",
+    "firebase_url": "https://lalavanderia-koiti.firebaseio.com",
+    "project_id": "lalavanderia-koiti",
+    "storage_bucket": "lalavanderia-koiti.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116367892117:android:915ea30df9b64482f0c59c",
+        "android_client_info": {
+          "package_name": "com.koiti.lalavanderia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116367892117-isbthflid9qf4gterjf1lf9qrnfe3f6o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXYf7oshjqppdzc6giV4oY-bQKd2uUBv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116367892117-isbthflid9qf4gterjf1lf9qrnfe3f6o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
