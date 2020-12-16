@@ -3,42 +3,17 @@ import React, {useState, useEffect} from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
 import styles from '../../stylesheets/styleSignIn';
 import auth from '@react-native-firebase/auth';
-import {useDispatch} from 'react-redux';
 import {signIn} from '../../store/actions/authAction';
 import GoogleSignIn from '../../components/GoogleSignIn';
 import FacebookSignIn from '../../components/FacebookSignIn';
 import PhoneAuth from './PhoneAuth';
+import {useSelector} from 'react-redux';
+import DataForm from './DataForm';
 
 const SignIn = ({navigation}) => {
-  const dispatch = useDispatch();
+  const {uid} = useSelector((state) => state.userData.user);
 
-  const [user, setUser] = useState();
-
-  // Handle user state changes
-  function onAuthStateChanged(user) {
-    setUser(user);
-    console.log(user, 'user');
-    if (user) {
-      dispatch(
-        signIn({
-          name: user.displayName,
-          email: user.email,
-          phoneNumber: user.phoneNumber,
-          photo: user.photoURL,
-          id: user.uid,
-          address: null,
-        }),
-      );
-    }
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!user) {
+  if (!uid) {
     return (
       <View style={styles.container}>
         <View style={styles.title}>
@@ -50,12 +25,8 @@ const SignIn = ({navigation}) => {
             style={{width: '75%', height: '75%', resizeMode: 'contain'}}
           />
         </View>
-        <View style={styles.containerSocialLogin}>
-          <Text style={styles.textContinue}>Continuar con</Text>
-          <View flexDirection="row">
-            <GoogleSignIn />
-            <FacebookSignIn />
-          </View>
+        <View style={styles.containerLoginMethods}>
+          <GoogleSignIn />
           <View flexDirection="row">
             <View style={styles.linesLeft} />
             <Text style={styles.textBetweenLines}>O</Text>
@@ -74,7 +45,7 @@ const SignIn = ({navigation}) => {
     );
   }
 
-  return <PhoneAuth />;
+  return <DataForm />;
 };
 
 export default SignIn;

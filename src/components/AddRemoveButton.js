@@ -8,7 +8,7 @@ Icon.loadFont();
 const AddRemoveButton = (props) => {
   return (
     <View style={styles.container}>
-      <View style={{marginLeft: 10}}>
+      <View>
         <Icon
           name="ios-remove"
           size={40}
@@ -17,7 +17,7 @@ const AddRemoveButton = (props) => {
         />
       </View>
       <Text style={styles.text}>{props.quantity}</Text>
-      <View style={{marginRight: 10}}>
+      <View>
         <Icon name="ios-add" size={40} color="black" onPress={props.add} />
       </View>
     </View>
@@ -27,9 +27,9 @@ const AddRemoveButton = (props) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
-    width: 100,
+    width: 110,
     backgroundColor: 'white',
     borderRadius: 10,
     elevation: 2,

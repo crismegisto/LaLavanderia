@@ -1,31 +1,81 @@
 // In App.js in a new project
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawerContent from './CustomDraweContent';
 import HomeStack from './Stacks/HomeStack';
-import ShoppingCartStack from './Stacks/ShoppingCartStack';
+import PaymentProcessStack from './Stacks/PaymentProcessStack';
 import BalanceStack from './Stacks/BalanceStack';
 import PaymentMethodsStack from './Stacks/PaymentMethodsStack';
 import AccountStack from './Stacks/AccountStack';
 import SignIn from '../screens/authFlow/SignIn';
 import Login from '../screens/authFlow/Login';
 import SignUp from '../screens/authFlow/SignUp';
+import DataForm from '../screens/authFlow/DataForm';
 import ForgotPassword from '../screens/authFlow/ForgotPassword';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {signIn} from '../store/actions/authAction';
+import {saveNavigation} from '../store/actions/navigationAction';
+import auth from '@react-native-firebase/auth';
+import PDFReader from '../screens/PDFReader';
+import Loader from '../components/Loader';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 function IndexNavigation() {
-  const userPhoneNumber = useSelector(
-    (state) => state.userData.user.phoneNumber,
-  );
+  const dispatch = useDispatch();
+  const initialStateRedux = useSelector((state) => state.navigation[0]);
+  const transactionId = useSelector((state) => state.transaction[0]);
+  const [isReady, setIsReady] = useState(false);
+  const [initialState, setInitialState] = useState(null);
+  useEffect(() => {
+    if (initialStateRedux && transactionId) {
+      setInitialState(initialStateRedux);
+    } else {
+      if (!initialState) {
+        setInitialState(null);
+      }
+    }
+
+    if (!isReady) {
+      setIsReady(true);
+    }
+  }, [initialState, initialStateRedux, isReady, transactionId]);
+
+  const {document} = useSelector((state) => state.userData.user);
+  useEffect(() => {
+    function onAuthStateChanged(user) {
+      if (user && !document) {
+        dispatch(
+          signIn({
+            name: user.displayName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            photo: user.photoURL,
+            uid: user.uid,
+          }),
+        );
+      }
+    }
+
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, [dispatch, document]);
+
+  if (!isReady) {
+    return <Loader />;
+  }
+
   return (
-    <NavigationContainer>
-      {userPhoneNumber === null ? (
+    <NavigationContainer
+      initialState={initialState}
+      onStateChange={(state) => {
+        dispatch(saveNavigation(state));
+      }}>
+      {document === null ? (
         <Stack.Navigator>
           <Stack.Screen
             name="SignIn"
@@ -47,6 +97,16 @@ function IndexNavigation() {
             component={SignUp}
             options={{headerShown: false}}
           />
+          <Stack.Screen
+            name="DataForm"
+            component={DataForm}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="TermsAndConditions"
+            component={PDFReader}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
       ) : (
         <Drawer.Navigator
@@ -63,8 +123,8 @@ function IndexNavigation() {
             options={{swipeEnabled: false}}
           />
           <Drawer.Screen
-            name="ShoppingCartStack"
-            component={ShoppingCartStack}
+            name="PaymentProcessStack"
+            component={PaymentProcessStack}
             options={{swipeEnabled: false}}
           />
           <Drawer.Screen

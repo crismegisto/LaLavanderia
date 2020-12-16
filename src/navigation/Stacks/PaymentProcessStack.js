@@ -1,18 +1,15 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/display-name */
 import React from 'react';
 import {Platform} from 'react-native';
-import Ionicon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {createStackNavigator} from '@react-navigation/stack';
-import PaymentMethods from '../../screens/PaymentMethods';
-import AddCard from '../../screens/AddCard';
-import ShoppingCartIcon from '../../components/ShoppingCartIcon';
+import ShoppingCart from '../../screens/paymentProcess/ShoppingCart';
+import MakePayment from '../../screens/paymentProcess/MakePayment';
+import PDFReader from '../../screens/PDFReader';
 
 const Stack = createStackNavigator();
 
-const PaymentMethodsStack = ({navigation}) => (
+const PaymentProcessStack = ({navigation}) => (
   <Stack.Navigator
-    initialRouteName="PaymentMethods"
     screenOptions={{
       headerStyle: {
         backgroundColor: '#98D7E8',
@@ -23,39 +20,43 @@ const PaymentMethodsStack = ({navigation}) => (
       },
     }}>
     <Stack.Screen
-      name="PaymentMethods"
-      component={PaymentMethods}
+      name="ShoppingCart"
+      component={ShoppingCart}
       options={{
-        title: 'Métodos de pago',
+        title: 'Carrito de compras',
         headerTitleAlign: 'center',
         headerLeft: () => (
-          <Ionicon
+          <Icon
             name="ios-arrow-back"
             size={35}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
-            onPress={() => navigation.navigate('HomeStack')}
+            onPress={() => navigation.navigate('Categories')}
           />
         ),
-        headerRight: () => <ShoppingCartIcon {...navigation} />,
       }}
     />
     <Stack.Screen
-      name="AddCard"
+      name="MakePayment"
+      component={MakePayment}
       options={{
-        title: 'Agregar Tarjeta',
+        title: 'Método de Pago',
         headerTitleAlign: 'center',
         headerLeft: () => (
-          <Ionicon
+          <Icon
             name="ios-arrow-back"
             size={35}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
-            onPress={() => navigation.navigate('PaymentMethods')}
+            onPress={() => navigation.navigate('ShoppingCart')}
           />
         ),
       }}
-      component={AddCard}
+    />
+    <Stack.Screen
+      name="TermsAndConditions"
+      component={PDFReader}
+      options={{headerShown: false}}
     />
   </Stack.Navigator>
 );
 
-export default PaymentMethodsStack;
+export default PaymentProcessStack;

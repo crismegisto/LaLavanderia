@@ -16,13 +16,16 @@ function Categories({navigation}) {
     <TouchableOpacity
       style={styles.categorie}
       onPress={() =>
-        navigation.navigate('Products', {id: item.id, title: item.categorie})
+        navigation.navigate('Products', {
+          id: item.id,
+          title: item.categoria_nombre,
+        })
       }>
       <ImageBackground
         source={{uri: item.logo}}
         style={styles.ImageBackground}
         imageStyle={{borderRadius: 15}}>
-        <Text style={styles.text}>{item.categorie}</Text>
+        <Text style={styles.text}>{item.categoria_nombre}</Text>
       </ImageBackground>
     </TouchableOpacity>
   );

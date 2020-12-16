@@ -12,14 +12,20 @@ const AddCard = ({navigation}) => {
 
   const onChange = (data) => {
     if (data.valid) {
+      let values = {
+        ...data.values,
+        number: data.values.number.replace(/\s+/g, ''),
+      };
       setValidCard(true);
-      setDataToSave(data.values);
+      setDataToSave(values);
     } else {
       setValidCard(false);
     }
   };
 
   const onPressSave = () => {
+    // const id = await tokenCard();
+    // console.log(id);
     dispatch(addCard({...dataToSave, id: Math.random(), active: false}));
     navigation.goBack();
   };
@@ -29,7 +35,7 @@ const AddCard = ({navigation}) => {
       <CreditCardInput requiresName onChange={onChange} />
       <View style={{flex: 1, alignItems: 'center'}}>
         <Button
-          title="Guardar Tarjeta"
+          title="Recordar Tarjeta"
           disabled={!validCard}
           onPress={onPressSave}
         />

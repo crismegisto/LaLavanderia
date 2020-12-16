@@ -24,6 +24,7 @@ const ProductsInShoppingCart = () => {
   return (
     <FlatList
       data={productsInCart}
+      keyExtractor={(item) => item.id.toString()}
       renderItem={({item}) => (
         <View
           style={{
@@ -69,13 +70,15 @@ const ProductsInShoppingCart = () => {
               remove={() => remove(item)}
               add={() => add(item.id)}
             />
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-              }}>
-              Total: ${item.price * item.quantity}
-            </Text>
+            {item.precios.length > 0 && (
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                }}>
+                Total: ${item.precios[0].precio_valor * item.quantity}
+              </Text>
+            )}
           </View>
         </View>
       )}

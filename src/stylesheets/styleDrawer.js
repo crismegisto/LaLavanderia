@@ -1,30 +1,28 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   drawerContent: {
-    flex: 1,
+    flex: 4,
   },
   userInfoSection: {
-    flexDirection: 'row',
-    marginTop: 17,
-    marginLeft: 20,
-    // paddingLeft: 20,
-    marginBottom: 25
+    alignItems: 'center',
+    marginTop: 15,
+    marginBottom: 15,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     marginTop: 3,
     fontWeight: 'bold',
-    color: '#02193E'
+    color: 'black',
   },
   titleItem: {
     fontSize: 18,
-    color: '#02193E'
+    color: 'black',
   },
   caption: {
     fontSize: 14,
     lineHeight: 14,
-    color: '#02193E'
+    color: 'white',
   },
   row: {
     marginTop: 20,
@@ -41,17 +39,22 @@ export default StyleSheet.create({
     marginRight: 3,
   },
   drawerSection: {
-    marginTop: 15,
+    marginTop: 25,
+    justifyContent: 'center',
   },
   bottomDrawerSection: {
     marginBottom: 15,
     borderTopColor: '#f4f4f4',
-    borderTopWidth: 1
+    borderTopWidth: 1,
   },
   preference: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 12,
     paddingHorizontal: 16,
+  },
+  partingLine: {
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
   },
 });

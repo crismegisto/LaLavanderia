@@ -1,6 +1,5 @@
-/* eslint-disable no-undef */
 import React, {useEffect} from 'react';
-import {SocialIcon} from 'react-native-elements';
+import {TouchableOpacity, Image, Text} from 'react-native';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
 import styles from '../stylesheets/styleSignIn';
@@ -39,7 +38,13 @@ const SignInGoogle = () => {
   };
 
   return (
-    <SocialIcon style={styles.iconGoogle} type="google" onPress={signIn} />
+    <TouchableOpacity style={styles.googleButton} onPress={signIn}>
+      <Image
+        source={require('../assets/google-icon.png')}
+        style={styles.googleIcon}
+      />
+      <Text style={styles.googleButtonText}>Iniciar Sesión con Google</Text>
+    </TouchableOpacity>
   );
 };
 

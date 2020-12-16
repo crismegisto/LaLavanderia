@@ -1,3 +1,5 @@
+import {ipAddress} from '../../keys';
+
 export const requestCategories = () => ({
   type: 'REQUEST_CATEGORIES',
 });
@@ -11,9 +13,17 @@ export const invalidateCategories = () => ({
   type: 'INVALIDATE_CATEGORIES',
 });
 
+export const reviewedCategory = (id) => ({
+  type: 'REVIEWED_CATEGORY',
+  id,
+});
+
+export const allReviewed = () => ({
+  type: 'ALL_REVIEWED',
+});
+
 export const fetchCategories = () => {
-  let url =
-    'https://my-json-server.typicode.com/Cristianr1/fakeJSON/categories';
+  let url = `http://${ipAddress}/lalavanderia/public/api/categorias`;
   return async (dispatch) => {
     dispatch(requestCategories());
     try {

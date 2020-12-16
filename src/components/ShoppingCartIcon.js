@@ -27,7 +27,7 @@ const ShoppingCartIcon = (props) => {
         {padding: 5},
         Platform.OS == 'android' ? styles.iconContainer : null,
       ]}>
-      <TouchableOpacity onPress={() => props.navigate('ShoppingCartStack')}>
+      <TouchableOpacity onPress={() => props.navigate('PaymentProcessStack')}>
         {totalQuantity > 0 && (
           <View
             style={{

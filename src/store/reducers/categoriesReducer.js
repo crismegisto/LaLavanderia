@@ -2,6 +2,7 @@ const initialState = {
   isFetching: false,
   didInvalidate: false,
   categoriesData: null,
+  isReviewCompleted: false,
 };
 
 const categoriesReducer = (state = initialState, action) => {
@@ -13,10 +14,25 @@ const categoriesReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         didInvalidate: false,
-        categoriesData: action.payload,
+        categoriesData: action.payload.map((item) => ({
+          ...item,
+          isReviewed: false,
+        })),
       };
     case 'INVALIDATE_CATEGORIES':
       return {...state, isFetching: false, didInvalidate: true};
+    case 'REVIEWED_CATEGORY':
+      return {
+        ...state,
+        categoriesData: state.categoriesData.map((item) =>
+          action.id === item.id ? {...item, isReviewed: true} : item,
+        ),
+      };
+    case 'ALL_REVIEWED':
+      return {
+        ...state,
+        isReviewCompleted: true,
+      };
     default:
       return state;
   }

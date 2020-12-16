@@ -58,6 +58,10 @@ const PaymentMethods = ({navigation}) => {
                   source={
                     item.type === 'cash'
                       ? require('../assets/icons-credit-card/cash.png')
+                      : item.type === 'nequi'
+                      ? require('../assets/icons-credit-card/nequi.png')
+                      : item.type === 'pse'
+                      ? require('../assets/icons-credit-card/pse.png')
                       : item.type === 'visa'
                       ? require('../assets/icons-credit-card/visa.png')
                       : require('../assets/icons-credit-card/mastercard.png')
@@ -65,9 +69,7 @@ const PaymentMethods = ({navigation}) => {
                   style={{width: 45, height: 35, resizeMode: 'contain'}}
                 />
                 <Text style={{marginLeft: 15}}>
-                  {item.number.length > 0
-                    ? item.number.slice(item.number.length - 4)
-                    : 'Efectivo'}
+                  {item.id > 3 ? item.data.number.substring(12) : item.type}
                 </Text>
               </View>
               {item.active && <Icon name="check" size={30} color="green" />}

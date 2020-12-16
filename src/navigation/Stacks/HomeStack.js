@@ -69,7 +69,7 @@ const HomeStack = ({navigation}) => (
       name="Products"
       component={Products}
       options={{
-        title: 'Productos',
+        title: '',
         headerTitleAlign: 'center',
         headerLeft: () => (
           <Ionicon

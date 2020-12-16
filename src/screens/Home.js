@@ -2,10 +2,11 @@
 import React, {useEffect} from 'react';
 import {View, Text, TouchableOpacity, StatusBar} from 'react-native';
 import Carousel from '../components/Carousel';
-import styles from '../stylesheets/stylesHome';
+import styles from '../stylesheets/styleHome';
 import {fetchCategories} from '../store/actions/categoriesAction';
 import {fetchBalance} from '../store/actions/balanceAction';
 import {useDispatch} from 'react-redux';
+import ContactUs from '../components/ContactUs';
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
@@ -45,15 +46,7 @@ const Home = ({navigation}) => {
         </Text>
       </TouchableOpacity>
       <View style={styles.separator} />
-      <View style={styles.bottom}>
-        <Text
-          style={{
-            color: '#02193E',
-            fontSize: 22,
-          }}>
-          Contactenos
-        </Text>
-      </View>
+      <ContactUs />
     </View>
   );
 };
