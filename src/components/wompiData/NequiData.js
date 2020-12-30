@@ -67,6 +67,8 @@ const NequiData = (props) => {
           keyboardType="numeric"
           value={phoneNumber}
           style={styles.textInput}
+          placeholder="Celular"
+          placeholderTextColor="gray"
           maxLength={10}
           onChangeText={(text) => handlePhoneNumberChange(text)}
         />

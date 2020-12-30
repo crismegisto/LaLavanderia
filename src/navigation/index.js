@@ -1,4 +1,3 @@
-// In App.js in a new project
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
@@ -8,7 +7,6 @@ import CustomDrawerContent from './CustomDraweContent';
 import HomeStack from './Stacks/HomeStack';
 import PaymentProcessStack from './Stacks/PaymentProcessStack';
 import BalanceStack from './Stacks/BalanceStack';
-import PaymentMethodsStack from './Stacks/PaymentMethodsStack';
 import AccountStack from './Stacks/AccountStack';
 import SignIn from '../screens/authFlow/SignIn';
 import Login from '../screens/authFlow/Login';
@@ -51,7 +49,7 @@ function IndexNavigation() {
       if (user && !document) {
         dispatch(
           signIn({
-            name: user.displayName,
+            displayName: user.displayName,
             email: user.email,
             phoneNumber: user.phoneNumber,
             photo: user.photoURL,
@@ -125,11 +123,6 @@ function IndexNavigation() {
           <Drawer.Screen
             name="PaymentProcessStack"
             component={PaymentProcessStack}
-            options={{swipeEnabled: false}}
-          />
-          <Drawer.Screen
-            name="PaymentMethodsStack"
-            component={PaymentMethodsStack}
             options={{swipeEnabled: false}}
           />
           <Drawer.Screen

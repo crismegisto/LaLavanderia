@@ -5,16 +5,17 @@ import Carousel from '../components/Carousel';
 import styles from '../stylesheets/styleHome';
 import {fetchCategories} from '../store/actions/categoriesAction';
 import {fetchBalance} from '../store/actions/balanceAction';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import ContactUs from '../components/ContactUs';
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
-
+  const uid = useSelector((state) => state.userData.user.uid);
+  const transactionId = useSelector((state) => state.transaction[0]);
   useEffect(() => {
     dispatch(fetchCategories());
-    dispatch(fetchBalance());
-  }, [dispatch]);
+    dispatch(fetchBalance(uid));
+  }, [dispatch, uid, transactionId]);
 
   return (
     <View style={{flex: 1, alignItems: 'stretch'}}>
@@ -30,7 +31,19 @@ const Home = ({navigation}) => {
             color: '#02193E',
             fontSize: 22,
           }}>
-          Planes y Servicios
+          Comprar
+        </Text>
+      </TouchableOpacity>
+      <View style={styles.separator} />
+      <TouchableOpacity
+        style={styles.bottom}
+        onPress={() => navigation.navigate('BalanceStack')}>
+        <Text
+          style={{
+            color: '#02193E',
+            fontSize: 22,
+          }}>
+          Ver Saldos
         </Text>
       </TouchableOpacity>
       <View style={styles.separator} />

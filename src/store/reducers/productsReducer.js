@@ -12,6 +12,8 @@ const productsReducer = (state = [], action) => {
       );
     case 'ELIMINATE_PRODUCT':
       return state.filter((item) => item.id !== action.id);
+    case 'REMOVE_ALL_PRODUCTS':
+      return [];
     default:
       return state;
   }

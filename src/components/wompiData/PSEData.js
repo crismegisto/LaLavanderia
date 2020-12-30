@@ -9,7 +9,7 @@ import {
 import {useDispatch} from 'react-redux';
 import {updateWompiData} from '../../store/actions/modifyPaymentsAction';
 import RNPickerSelect from 'react-native-picker-select';
-import {getFinancialInstitutions} from '../../api/pseApi';
+import {getFinancialInstitutions} from '../../api/wompi/pseApi';
 
 const PSEData = (props) => {
   const dispatch = useDispatch();
@@ -138,6 +138,7 @@ const PSEData = (props) => {
           style={styles.textInput}
           maxLength={11}
           placeholder={'Documento'}
+          placeholderTextColor="gray"
           onChangeText={(text) => handleDocumentChange(text)}
         />
       </View>

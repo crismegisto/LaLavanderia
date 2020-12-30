@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Image,
   ScrollView,
@@ -7,18 +7,25 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
+import {getCoverPage} from '../api/getCoverPageApi';
 
 let {width} = Dimensions.get('window');
 // height = height * 0.5 - StatusBar.currentHeight;
 
-const images = [
-  'https://destinonegocio.com/wp-content/uploads/2015/12/ico-destinonegocio-lavanderia-istock-getty-images.jpg',
-  'https://www.diariamenteali.com/medias/023-Lavanderia-siempre-ordenada.jpg?context=bWFzdGVyfGltYWdlc3wxMjA2MjV8aW1hZ2UvanBlZ3xoN2UvaGJlLzg3OTkyNTY3MDcxMDIvMDIzLS0tTGF2YW5kZXJpYS1zaWVtcHJlLW9yZGVuYWRhLmpwZ3xhMGY1YWI1ODczMGI1ZWViZTA0ODM0NzRlNDQ1NDM1NThiN2RhNTMzMTMyZTM4MDljZDYzMDVlMGUzYjRiZmQz',
-  'https://assets.entrepreneur.com/content/3x2/2000/20180626143642-lavanderia.jpeg?width=700&crop=2:1',
-];
-
 const Carousel = () => {
   const [active, setisActive] = useState(0);
+
+  const [images, setImages] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const coverPage = await getCoverPage();
+        setImages(coverPage);
+      } catch (error) {}
+    };
+
+    fetchData();
+  }, []);
 
   const change = ({nativeEvent}) => {
     const slide = Math.ceil(
@@ -41,8 +48,8 @@ const Carousel = () => {
         {images.map((image, index) => (
           <Image
             key={index}
-            source={{uri: image}}
-            style={{width, resizeMode: 'cover'}}
+            source={{uri: image.portada_imagen_ruta}}
+            style={{width, resizeMode: 'stretch'}}
           />
         ))}
       </ScrollView>

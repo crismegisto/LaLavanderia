@@ -42,6 +42,7 @@ const FormField = (props) => {
           autoCapitalize="words"
           maxLength={props.maxLength}
           placeholder={`Introduzca ${props.title}`}
+          placeholderTextColor="dodgerblue"
           value={registry}
           onChangeText={(text) => handleFormChange(text)}
         />

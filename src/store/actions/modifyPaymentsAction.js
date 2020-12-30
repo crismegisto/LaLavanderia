@@ -1,5 +1,5 @@
-export const modifyPayments = (paymentId) => ({
-  type: 'MODIFY_PAYMENTS',
+export const modifyPaymentMethod = (paymentId) => ({
+  type: 'MODIFY_PAYMENT_METHOD',
   paymentId,
 });
 

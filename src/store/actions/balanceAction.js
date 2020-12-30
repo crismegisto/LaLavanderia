@@ -11,8 +11,8 @@ export const invalidateBalance = () => ({
   type: 'INVALIDATE_BALANCE',
 });
 
-export const fetchBalance = () => {
-  let url = 'https://my-json-server.typicode.com/Cristianr1/fakeJSON/balance';
+export const fetchBalance = (uid) => {
+  let url = `http://104.131.86.8/lalavanderia/public/api/saldos?cliente=${uid}`;
   return async (dispatch) => {
     dispatch(requestBalance());
     try {

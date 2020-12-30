@@ -1,6 +1,13 @@
 /* eslint-disable react/prop-types */
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Platform, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Platform,
+  TouchableOpacity,
+  Text,
+  Alert,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 
@@ -9,6 +16,7 @@ Icon.loadFont();
 //Component that shows the cart icon in the upper left of the header and is constantly updated with redux
 const ShoppingCartIcon = (props) => {
   const products = useSelector((state) => state.productsInCart);
+  const productsInCart = useSelector((state) => state.productsInCart);
 
   const [totalQuantity, setTotalQuantity] = useState(0);
   useEffect(() => {
@@ -21,13 +29,21 @@ const ShoppingCartIcon = (props) => {
     setTotalQuantity(total);
   }, [products]);
 
+  const goToPay = () => {
+    if (productsInCart.length) {
+      props.navigate('PaymentProcessStack');
+    } else {
+      Alert.alert('Carrito Vacío', 'Por favor agregue productos');
+    }
+  };
+
   return (
     <View
       style={[
         {padding: 5},
         Platform.OS == 'android' ? styles.iconContainer : null,
       ]}>
-      <TouchableOpacity onPress={() => props.navigate('PaymentProcessStack')}>
+      <TouchableOpacity onPress={goToPay}>
         {totalQuantity > 0 && (
           <View
             style={{

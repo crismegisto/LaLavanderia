@@ -21,8 +21,7 @@ export default StyleSheet.create({
     borderRadius: 10,
   },
   text: {
-    fontSize: 12,
-    fontWeight: 'bold',
+    fontSize: 16,
     textAlign: 'center',
     marginLeft: 5,
     marginRight: 5,

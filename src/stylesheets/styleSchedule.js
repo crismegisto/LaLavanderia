@@ -47,4 +47,11 @@ export default StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
   },
+  productsContainer: {
+    flex: 1,
+    marginTop: 10,
+    backgroundColor: 'white',
+    margin: 7,
+    borderRadius: 10,
+  },
 });

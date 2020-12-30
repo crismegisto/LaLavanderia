@@ -17,3 +17,7 @@ export const eliminateProduct = (id) => ({
   type: 'ELIMINATE_PRODUCT',
   id,
 });
+
+export const removeAllProducts = () => ({
+  type: 'REMOVE_ALL_PRODUCTS',
+});

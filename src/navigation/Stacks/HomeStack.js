@@ -43,7 +43,11 @@ const HomeStack = ({navigation}) => (
         headerTitle: () => (
           <Image
             source={require('../../assets/icon-laundry.png')}
-            style={{width: 50, height: 50, resizeMode: 'contain'}}
+            style={[
+              Platform.OS == 'ios'
+                ? {width: 40, height: 40, resizeMode: 'contain'}
+                : {width: 50, height: 50, resizeMode: 'contain'},
+            ]}
           />
         ),
       }}

@@ -1,11 +1,24 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 import {LiteCreditCardInput} from 'react-native-input-credit-card';
 import {useDispatch} from 'react-redux';
 import {updateWompiData} from '../../store/actions/modifyPaymentsAction';
 
 const CreditCardData = (props) => {
   const dispatch = useDispatch();
+
+  const [showActivityIndicator, setShowActivityIndicator] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowActivityIndicator(false);
+    }, 500);
+  }, []);
 
   const [isCardValid, setIsCardValid] = useState(false);
   const [cardValues, setCardValues] = useState({});
@@ -47,6 +60,14 @@ const CreditCardData = (props) => {
     }
   };
 
+  if (showActivityIndicator) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center'}}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
     <View style={{marginTop: 20, alignItems: 'center'}}>
       <LiteCreditCardInput ref={CCInput} onChange={onChange} />
@@ -63,6 +84,7 @@ const CreditCardData = (props) => {
           style={styles.textInput}
           maxLength={40}
           placeholder={'Pedro Pérez'}
+          placeholderTextColor="gray"
           onChangeText={(text) => setName(text)}
         />
       </View>

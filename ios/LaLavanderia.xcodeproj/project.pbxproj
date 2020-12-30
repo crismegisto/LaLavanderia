@@ -297,7 +297,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = DJ7TZ3C77X;
+						DevelopmentTeam = H9TMQWHPW8;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -736,19 +736,20 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EFDFEF934CB5EDE03771F313 /* Pods-LaLavanderia.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = DJ7TZ3C77X;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = H9TMQWHPW8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LaLavanderia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.koiti.lalavanderia;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koiti.app.lalavanderia;
 				PRODUCT_NAME = LaLavanderia;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -760,18 +761,19 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0ADBDC3FCCBCDBEA37661881 /* Pods-LaLavanderia.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = DJ7TZ3C77X;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = H9TMQWHPW8;
 				INFOPLIST_FILE = LaLavanderia/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.koiti.lalavanderia;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koiti.app.lalavanderia;
 				PRODUCT_NAME = LaLavanderia;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

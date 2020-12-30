@@ -7,11 +7,7 @@ import PaymentMethod from '../../components/PaymentMethod';
 
 const ShoppingCart = ({navigation}) => {
   const productsInCart = useSelector((state) => state.productsInCart);
-  const payment = useSelector((state) =>
-    state.userData.paymentMethods.filter((item) => item.active),
-  );
-
-  const [totalToPay, setTotalToPay] = useState(0); //Products that will be used temporarily and locally
+  const [totalToPay, setTotalToPay] = useState(0);
   useEffect(() => {
     if (productsInCart.length) {
       const total = productsInCart
@@ -29,7 +25,6 @@ const ShoppingCart = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* <PaymentMethod payment={payment} /> */}
       <View style={styles.productsContainer}>
         <ProductsInShoppingCart />
       </View>

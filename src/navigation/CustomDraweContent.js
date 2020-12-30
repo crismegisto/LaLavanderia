@@ -6,10 +6,9 @@ import {Avatar, Title, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles from '../stylesheets/styleDrawer';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {signOut} from '../store/actions/authAction';
 import auth from '@react-native-firebase/auth';
-import {useSelector} from 'react-redux';
 
 function CustomDrawerContent(props) {
   const dispatch = useDispatch();
@@ -35,7 +34,7 @@ function CustomDrawerContent(props) {
               }}
               size={70}
             />
-            <Title style={styles.title}>{userData.user.name}</Title>
+            <Title style={styles.title}>{userData.user.displayName}</Title>
           </View>
 
           <View style={styles.partingLine} />
@@ -47,14 +46,6 @@ function CustomDrawerContent(props) {
               label="Ver Saldos"
               onPress={() => {
                 props.navigation.navigate('BalanceStack');
-              }}
-            />
-            <DrawerItem
-              icon={() => <Icon name="ios-card" size={30} color="#02193E" />}
-              labelStyle={styles.titleItem}
-              label="Métodos de Pago"
-              onPress={() => {
-                props.navigation.navigate('PaymentMethodsStack');
               }}
             />
             <DrawerItem

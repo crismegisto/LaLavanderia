@@ -5,7 +5,7 @@ import {
   prv_test,
   pub_prod,
   prv_prod,
-} from '../keys';
+} from '../../keys';
 
 export const getAcceptanceToken = async () => {
   const response = await fetch(production + '/merchants/' + pub_prod);

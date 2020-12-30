@@ -23,7 +23,7 @@ export const allReviewed = () => ({
 });
 
 export const fetchCategories = () => {
-  let url = `http://${ipAddress}/lalavanderia/public/api/categorias`;
+  let url = `http://${ipAddress}/lalavanderia/public/api/categorias?lista=2`;
   return async (dispatch) => {
     dispatch(requestCategories());
     try {

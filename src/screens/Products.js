@@ -1,6 +1,13 @@
 /* eslint-disable react/prop-types */
 import React, {useState, useEffect} from 'react';
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   toggleProduct,
@@ -16,7 +23,7 @@ const Products = (props) => {
   const dispatch = useDispatch();
   const products = useSelector(
     (state) =>
-      state.categories.categoriesData[props.route.params.id - 1].productos,
+      state.categories.categoriesData[props.route.params.index].productos,
   );
   const categories = useSelector((state) => state.categories.categoriesData);
   const categoriesTitle = categories.map((item) => item.categoria_nombre);
@@ -31,9 +38,12 @@ const Products = (props) => {
   );
   useEffect(() => {
     if (isAllReviewed && !isReviewCompleted) {
-      props.navigation.navigate('ShoppingCartStack');
+      if (productsInCart.length) {
+        props.navigation.navigate('PaymentProcessStack');
+      }
       dispatch(allReviewed());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isAllReviewed, isReviewCompleted, props.navigation]);
 
   const [navigateCategories, setNavigateCategories] = useState(false);
@@ -100,31 +110,106 @@ const Products = (props) => {
   };
 
   const nextOrBuy = () => {
-    if (props.route.params.id + 1 > categories.length) {
+    if (props.route.params.index === categories.length - 1) {
       props.navigation.navigate('Products', {
-        id: 1,
+        index: 0,
         title: categoriesTitle[0],
       });
     } else {
       props.navigation.navigate('Products', {
-        id: props.route.params.id + 1,
-        title: categoriesTitle[props.route.params.id],
+        index: props.route.params.index + 1,
+        title: categoriesTitle[props.route.params.index + 1],
       });
     }
 
-    dispatch(reviewedCategory(props.route.params.id));
+    dispatch(reviewedCategory(props.route.params.index));
+  };
+
+  const buy = () => {
+    if (productsInCart.length) {
+      props.navigation.navigate('PaymentProcessStack');
+    } else {
+      Alert.alert('Carrito Vacío', 'Por favor agregue productos');
+    }
   };
 
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 6, alignItems: 'stretch'}}>
         <FlatList
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
-          ListFooterComponent={() => <View style={styles.separator} />}
           data={localProducts}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({item, index}) => (
-            <View style={styles.flatListContent}>
+            <View
+              style={{
+                flex: 1,
+                marginVertical: 10,
+                marginHorizontal: 15,
+                borderRadius: 20,
+                height: 210,
+                backgroundColor: 'white',
+              }}>
+              <Image
+                style={{
+                  marginTop: 10,
+                  height: 120,
+                  width: 120,
+                  resizeMode: 'cover',
+                  alignSelf: 'center',
+                }}
+                source={{
+                  uri: item.producto_imagen_ruta,
+                }}
+              />
+              <></>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    marginHorizontal: 12,
+                  }}>
+                  <Text style={[styles.text, {fontWeight: 'bold'}]}>
+                    {item.producto_nombre}
+                  </Text>
+                  <Text style={styles.text}>
+                    Precio c/u: {item.precios[0].precio_valor}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'space-around',
+                    height: 70,
+                  }}>
+                  {item.quantity > 0 ? (
+                    <AddRemoveButton
+                      quantity={item.quantity}
+                      remove={() => remove(item, index)}
+                      add={() => add(index)}
+                    />
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.toggleButton}
+                      onPress={() => toggleAddButton(item, index)}>
+                      <Text style={styles.toggleButtonText}>Agregar</Text>
+                    </TouchableOpacity>
+                  )}
+                  {item.precios.length > 0 && (
+                    <Text style={[styles.text, {fontSize: 16}]}>
+                      Total: ${item.precios[0].precio_valor * item.quantity}
+                    </Text>
+                  )}
+                </View>
+              </View>
+              <></>
+            </View>
+            /* <View style={styles.flatListContent}>
               <View style={styles.containerProductCard}>
                 <Image
                   style={{width: 80, height: 80}}
@@ -161,14 +246,12 @@ const Products = (props) => {
                   </Text>
                 )}
               </View>
-            </View>
+            </View> */
           )}
         />
       </View>
       {isReviewCompleted ? (
-        <TouchableOpacity
-          style={styles.buyButton}
-          onPress={() => props.navigation.navigate('ShoppingCartStack')}>
+        <TouchableOpacity style={styles.buyButton} onPress={buy}>
           <Text style={styles.buyButtonText}>Comprar</Text>
         </TouchableOpacity>
       ) : (

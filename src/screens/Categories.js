@@ -12,17 +12,17 @@ import {useSelector} from 'react-redux';
 
 function Categories({navigation}) {
   const categories = useSelector((state) => state.categories.categoriesData);
-  const renderItem = ({item}) => (
+  const renderItem = ({item, index}) => (
     <TouchableOpacity
       style={styles.categorie}
       onPress={() =>
         navigation.navigate('Products', {
-          id: item.id,
+          index,
           title: item.categoria_nombre,
         })
       }>
       <ImageBackground
-        source={{uri: item.logo}}
+        source={{uri: item.categoria_imagen_ruta}}
         style={styles.ImageBackground}
         imageStyle={{borderRadius: 15}}>
         <Text style={styles.text}>{item.categoria_nombre}</Text>

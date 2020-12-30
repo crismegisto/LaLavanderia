@@ -1,18 +1,23 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet, Linking} from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, Linking, Image} from 'react-native';
 
 const ContactUs = () => {
   const sendWhatsapp = async () => {
     try {
-      await Linking.openURL('whatsapp://send?phone=573203621233');
+      await Linking.openURL('whatsapp://send?phone=573227230247');
     } catch (error) {
       alert('Asegúrese de tener Whatsapp instalado en el dispositivo.');
     }
   };
 
   return (
-    <TouchableOpacity style={styles.bottom} onPress={sendWhatsapp}>
-      <Text style={styles.text}>Contactenos</Text>
+    <TouchableOpacity
+      style={{position: 'absolute', bottom: 25, right: 5}}
+      onPress={sendWhatsapp}>
+      <Image
+        style={{height: 90, width: 90}}
+        source={require('../assets/whatsapp-icon.png')}
+      />
     </TouchableOpacity>
   );
 };

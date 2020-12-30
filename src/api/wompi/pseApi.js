@@ -5,10 +5,10 @@ import {
   prv_test,
   pub_prod,
   prv_prod,
-} from '../keys';
+} from '../../keys';
 
 export const getFinancialInstitutions = async () => {
-  const response = await fetch(production + '/financial_institutions', {
+  const response = await fetch(production + '/pse/financial_institutions', {
     method: 'GET',
     headers: {
       Accept: '*/*',

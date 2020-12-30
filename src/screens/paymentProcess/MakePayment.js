@@ -8,7 +8,8 @@ import {
   getAcceptanceToken,
   createTransaction,
   checkTransaction,
-} from '../../api/transactionApi';
+} from '../../api/wompi/transactionApi';
+import {generateBill} from '../../api/generateBillApi';
 import Spinner from 'react-native-loading-spinner-overlay';
 import NequiData from '../../components/wompiData/NequiData';
 import PSEData from '../../components/wompiData/PSEData';
@@ -17,6 +18,7 @@ import {
   saveTransaction,
   deleteTransaction,
 } from '../../store/actions/transactionAction';
+import {removeAllProducts} from '../../store/actions/productsAction';
 import SuccessModal from '../../components/modals/SuccessModal';
 import DeclinedModal from '../../components/modals/declinedModal';
 import PaymentMethod from '../../components/PaymentMethod';
@@ -32,6 +34,15 @@ const MakePayment = ({navigation}) => {
     areTermsAndConditionsAccepted,
     setAreTermsAndConditionsAccepted,
   ] = useState(false);
+
+  const productsInCart = useSelector((state) =>
+    state.productsInCart.map((item) => ({
+      id: item.id,
+      cantidad: item.quantity,
+    })),
+  );
+  let productToBill = {productos: productsInCart};
+  const userUid = useSelector((state) => state.userData.user.uid);
 
   const transactionId = useSelector((state) => state.transaction[0]);
   useEffect(() => {
@@ -51,7 +62,9 @@ const MakePayment = ({navigation}) => {
           break;
         case 'APPROVED':
           dispatch(deleteTransaction());
+          generateBill(userUid, productToBill);
           setSuccessModalVisible(!successModalVisible);
+          dispatch(removeAllProducts());
           break;
         case 'DECLINED':
           dispatch(deleteTransaction());

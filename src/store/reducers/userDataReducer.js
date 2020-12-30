@@ -38,11 +38,9 @@ const initialState = {
       id: 3,
       type: 'Tarjeta Crédito',
       wompiData: {
-        number: '4242424242424242',
-        cvc: '789',
-        exp_month: '12',
-        exp_year: '29',
-        card_holder: 'Pedro Pérez',
+        type: 'CARD',
+        installments: null, // Número de cuotas
+        token: '', // Token de la tarjeta de crédito
       },
       active: false,
     },
@@ -70,7 +68,7 @@ const userDataReducer = (state = initialState, action) => {
       return {
         ...initialState,
       };
-    case 'MODIFY_PAYMENTS':
+    case 'MODIFY_PAYMENT_METHOD':
       return {
         ...state,
         paymentMethods: state.paymentMethods.map((item) =>

@@ -24,8 +24,8 @@ const categoriesReducer = (state = initialState, action) => {
     case 'REVIEWED_CATEGORY':
       return {
         ...state,
-        categoriesData: state.categoriesData.map((item) =>
-          action.id === item.id ? {...item, isReviewed: true} : item,
+        categoriesData: state.categoriesData.map((item, index) =>
+          action.id === index ? {...item, isReviewed: true} : item,
         ),
       };
     case 'ALL_REVIEWED':

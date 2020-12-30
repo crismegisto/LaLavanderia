@@ -3,12 +3,12 @@
 import React from 'react';
 import {Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import Balance from '../../screens/Balance';
 
 const Stack = createStackNavigator();
 
-const AccountStack = ({ navigation }) => (
+const AccountStack = ({navigation}) => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
@@ -18,8 +18,7 @@ const AccountStack = ({ navigation }) => (
       headerTitleStyle: {
         fontWeight: 'bold',
       },
-    }}
-    >
+    }}>
     <Stack.Screen
       name="Balance"
       component={Balance}
@@ -30,11 +29,8 @@ const AccountStack = ({ navigation }) => (
           <Icon
             name="ios-arrow-back"
             size={35}
-            style={[
-              Platform.OS == 'ios' ? { bottom: 4 } : null,
-              {padding: 10}
-            ]}
-            onPress={() => navigation.navigate("HomeStack")}
+            style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
+            onPress={() => navigation.navigate('HomeStack')}
           />
         ),
       }}
