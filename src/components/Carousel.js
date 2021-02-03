@@ -7,7 +7,7 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import {getCoverPage} from '../api/getCoverPageApi';
+import {getCoverPage} from '../api/getCoverPage';
 
 let {width} = Dimensions.get('window');
 // height = height * 0.5 - StatusBar.currentHeight;
@@ -49,7 +49,7 @@ const Carousel = () => {
           <Image
             key={index}
             source={{uri: image.portada_imagen_ruta}}
-            style={{width, resizeMode: 'stretch'}}
+            style={{width, resizeMode: 'stretch', borderRadius: 20}}
           />
         ))}
       </ScrollView>

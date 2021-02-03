@@ -1,9 +1,29 @@
 import {StyleSheet} from 'react-native';
+import {primary} from './colors';
 
 export default StyleSheet.create({
-  separator: {
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
+  container: {
+    flex: 1,
+  },
+  containerList: {
+    flex: 6,
+    alignItems: 'stretch',
+  },
+  containerRenderItem: {
+    flex: 1,
+    marginVertical: 5,
+    marginHorizontal: 15,
+    borderRadius: 20,
+    backgroundColor: 'white',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+  },
+  image: {
+    height: 100,
+    width: 100,
+    resizeMode: 'cover',
+    marginVertical: 15,
+    borderRadius: 10,
   },
   flatListContent: {
     flexDirection: 'row',
@@ -20,11 +40,16 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 10,
   },
-  text: {
+  textTitle: {
     fontSize: 16,
     textAlign: 'center',
-    marginLeft: 5,
-    marginRight: 5,
+    fontWeight: 'bold',
+    color: primary,
+  },
+  textSubTitle: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: primary,
   },
   addRemoveContainer: {
     flexDirection: 'row',
@@ -38,7 +63,7 @@ export default StyleSheet.create({
   buyButton: {
     backgroundColor: '#02193E',
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: 30,
     marginBottom: 15,
     marginTop: 15,
     width: '60%',
@@ -56,7 +81,7 @@ export default StyleSheet.create({
     height: 35,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10,
+    borderRadius: 30,
   },
   toggleButtonText: {
     fontSize: 16,

@@ -84,47 +84,48 @@ const PSEData = (props) => {
 
   return (
     <View style={styles.containerForm}>
-      <RNPickerSelect
-        placeholder={{
-          label: 'Tipo Persona',
-          value: null,
-          color: 'green',
-        }}
-        onValueChange={(value) => setTypePerson(value)}
-        value={typePerson}
-        items={[
-          {label: 'Natural', value: 0},
-          {label: 'Jurídica', value: 1},
-        ]}
-        style={{
-          inputAndroid: {
-            color: 'black',
-            height: 50,
-            width: 200,
-          },
-        }}
-      />
-      <RNPickerSelect
-        placeholder={{
-          label: 'Tipo Documento',
-          value: null,
-          color: 'green',
-        }}
-        onValueChange={(value) => setTypeDocument(value)}
-        value={typeDocument}
-        items={[
-          {label: 'CC', value: 'CC'},
-          {label: 'NIT', value: 'NIT'},
-        ]}
-        style={{
-          inputAndroid: {
-            color: 'black',
-            height: 50,
-            width: 200,
-          },
-        }}
-      />
-
+      <View style={{flexDirection: 'row', flex: 1}}>
+        <RNPickerSelect
+          placeholder={{
+            label: 'Tipo Persona',
+            value: null,
+            color: 'green',
+          }}
+          onValueChange={(value) => setTypePerson(value)}
+          value={typePerson}
+          items={[
+            {label: 'Natural', value: 0},
+            {label: 'Jurídica', value: 1},
+          ]}
+          style={{
+            inputAndroid: {
+              color: 'black',
+              height: 50,
+              width: 180,
+            },
+          }}
+        />
+        <RNPickerSelect
+          placeholder={{
+            label: 'Tipo Documento',
+            value: null,
+            color: 'green',
+          }}
+          onValueChange={(value) => setTypeDocument(value)}
+          value={typeDocument}
+          items={[
+            {label: 'CC', value: 'CC'},
+            {label: 'NIT', value: 'NIT'},
+          ]}
+          style={{
+            inputAndroid: {
+              color: 'black',
+              height: 50,
+              width: 180,
+            },
+          }}
+        />
+      </View>
       <View
         style={
           document.length > 7

@@ -1,124 +1,116 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
-import {getCollection} from '../../api/collectionAndDelivery/getCollectionApi';
+import {View, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useSelector} from 'react-redux';
+import {TextInput} from 'react-native-paper';
+import {primary, secondary, sextenary} from '../../theme/colors';
 
-const Step2 = (props) => {
-  const [selectedCollectionDate, setSelectedCollectionDate] = useState({});
-  const [collectionDate, setCollectionDate] = useState([]);
+const Step1 = (props) => {
+  const balance = useSelector((state) => state.balance.balanceUser);
+  const [balanceToSchedule, setBalanceToSchedule] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const results = await getCollection();
-        let newResults = results.map((item) => ({...item, isSelected: false}));
-        setCollectionDate(newResults);
-      } catch (error) {}
-    };
-
-    fetchData();
-  }, []);
+    let newArr = balance.map((item) => ({...item, currentValue: 0}));
+    setBalanceToSchedule(newArr);
+  }, [balance]);
 
   useEffect(() => {
-    if (Object.keys(selectedCollectionDate).length > 0) {
-      props.getCollectionDate(selectedCollectionDate);
-    }
-  }, [selectedCollectionDate, props]);
-
-  const onSelection = (selection) => {
-    let newCollectionDate = collectionDate.map((item) =>
-      selection.id === item.id
-        ? {...item, isSelected: true}
-        : {...item, isSelected: false},
+    let productsToUse = balanceToSchedule.filter(
+      (item) => item.currentValue > 0,
     );
-    setCollectionDate(newCollectionDate);
-    setSelectedCollectionDate(selection);
+    props.getProductsToUse(productsToUse);
+  }, [balanceToSchedule, props]);
+
+  const addUnitToSchedule = (id) => {
+    let newArr = balanceToSchedule.map((item) =>
+      id === item.id && item.saldo_cantidad > item.currentValue
+        ? {...item, currentValue: ++item.currentValue}
+        : item,
+    );
+    setBalanceToSchedule(newArr);
+  };
+
+  const removeUnitToSchedule = (id) => {
+    let newArr = balanceToSchedule.map((item) =>
+      id === item.id && item.currentValue > 0
+        ? {...item, currentValue: --item.currentValue}
+        : item,
+    );
+    setBalanceToSchedule(newArr);
   };
 
   return (
-    <View style={{flex: 1, justifyContent: 'center'}}>
-      <Text
-        style={{
-          fontSize: 20,
-          alignSelf: 'center',
-          color: 'black',
-          marginVertical: 10,
-          fontWeight: 'bold',
-        }}>
-        Fecha y Hora de Recogida
-      </Text>
-      <View style={{alignItems: 'center'}}>
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={true}
-          scrollEventThrottle={16}>
-          {collectionDate.map((item, index) => (
+    <FlatList
+      data={balanceToSchedule}
+      persistentScrollbar
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({item}) => (
+        <View style={styles.container}>
+          <TextInput
+            style={{margin: 7, fontSize: 17, width: '65%'}}
+            dense
+            mode="outlined"
+            label={item.saldo_cantidad + '  disponibles'}
+            disabled={true}
+            value={item.currentValue + '  ' + item.producto.producto_nombre}
+            theme={{colors: {disabled: primary, text: primary}}}
+          />
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
-              key={index}
-              onPress={() => onSelection(item)}
+              onPress={() => removeUnitToSchedule(item.id)}
+              disabled={!item.currentValue}
               style={
-                item.isSelected
-                  ? {...styles.buttonCard, backgroundColor: '#02193E'}
-                  : styles.buttonCard
+                item.currentValue
+                  ? [styles.button, {marginRight: 5}]
+                  : {
+                      ...styles.button,
+                      backgroundColor: sextenary,
+                      marginRight: 5,
+                    }
               }>
-              <Text
-                style={
-                  item.isSelected
-                    ? {...styles.buttonCardText, color: '#98D7E8'}
-                    : styles.buttonCardText
-                }>
-                {item.horario_recogida_fecha.split('-')[2]}
-              </Text>
-              <Text
-                style={
-                  item.isSelected
-                    ? {...styles.buttonCardDateText, color: '#98D7E8'}
-                    : styles.buttonCardDateText
-                }>
-                {item.horario_recogida_fecha.split('-')[1] === '12'
-                  ? 'DIC.'
-                  : 'ENE.'}
-              </Text>
+              <Ionicons name="ios-remove" size={25} color="white" />
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-        <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 20}}>
-          Horario Desde: {selectedCollectionDate.horario_recogida_hora_desde}
-        </Text>
-        <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 20}}>
-          Horario Hasta: {selectedCollectionDate.horario_recogida_hora_hasta}
-        </Text>
-      </View>
-    </View>
+            <TouchableOpacity
+              onPress={() => addUnitToSchedule(item.id)}
+              disabled={item.currentValue === item.saldo_cantidad}
+              style={
+                item.currentValue < item.saldo_cantidad
+                  ? [styles.button, {marginRight: 5}]
+                  : {
+                      ...styles.button,
+                      backgroundColor: sextenary,
+                      marginRight: 5,
+                    }
+              }>
+              <Ionicons name="ios-add" size={25} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  buttonCard: {
-    backgroundColor: '#98D7E8',
-    height: 80,
-    width: 60,
-    marginTop: 15,
-    marginHorizontal: 7,
-    borderRadius: 10,
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: secondary,
+    width: 30,
+    height: 30,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  buttonCardText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#02193E',
-  },
-  buttonCardDateText: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#02193E',
-    marginTop: 5,
-  },
 });
 
-export default Step2;
+export default Step1;

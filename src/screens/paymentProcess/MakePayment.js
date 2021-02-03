@@ -3,13 +3,13 @@ import {View, TouchableOpacity, Text, Alert, Linking} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import TermsAndConditions from '../../components/TermsAndConditions';
 import CheckBox from '@react-native-community/checkbox';
-import styles from '../../stylesheets/styleMakePayment';
+import styles from '../../theme/styleMakePayment';
 import {
   getAcceptanceToken,
   createTransaction,
   checkTransaction,
 } from '../../api/wompi/transactionApi';
-import {generateBill} from '../../api/generateBillApi';
+import {generateBill} from '../../api/generateBill';
 import Spinner from 'react-native-loading-spinner-overlay';
 import NequiData from '../../components/wompiData/NequiData';
 import PSEData from '../../components/wompiData/PSEData';
@@ -23,6 +23,10 @@ import SuccessModal from '../../components/modals/SuccessModal';
 import DeclinedModal from '../../components/modals/declinedModal';
 import PaymentMethod from '../../components/PaymentMethod';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import ContactUs from '../../components/ContactUs';
+import {quaternary} from '../../theme/colors';
 
 const MakePayment = ({navigation}) => {
   const dispatch = useDispatch();
@@ -110,22 +114,25 @@ const MakePayment = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <View style={{backgroundColor: 'white'}}></View>
+      <Header />
       <PaymentMethod payment={payment} />
       <>
         <Spinner
           visible={showSpinnerValidator}
           textContent={'Validando datos...'}
-          textStyle={{color: '#02193E'}}
-          color="#02193E"
+          textStyle={{color: quaternary}}
+          color={quaternary}
         />
         <Spinner
           visible={Boolean(transactionId)}
           textContent={'Verificando Transacción...'}
-          textStyle={{color: '#02193E'}}
-          color="#02193E"
+          textStyle={{color: quaternary}}
+          color={quaternary}
         />
       </>
       <KeyboardAwareScrollView
+        persistentScrollbar
         contentContainerStyle={styles.containerScrollView}>
         {payment[0].id === 1 ? (
           <NequiData
@@ -143,18 +150,6 @@ const MakePayment = ({navigation}) => {
             payment={payment}
           />
         )}
-        <>
-          <SuccessModal
-            openModal={successModalVisible}
-            modalVisible={() => setSuccessModalVisible(!successModalVisible)}
-            navigation={navigation}
-          />
-          <DeclinedModal
-            openModal={declinedModalVisible}
-            modalVisible={() => setDeclinedModalVisible(!declinedModalVisible)}
-            navigation={navigation}
-          />
-        </>
         <View style={styles.payment}>
           <View style={styles.termsAndConditions}>
             <CheckBox
@@ -181,7 +176,21 @@ const MakePayment = ({navigation}) => {
             <Text style={styles.paymentButtonText}>Pagar</Text>
           </TouchableOpacity>
         </View>
+        <>
+          <SuccessModal
+            openModal={successModalVisible}
+            modalVisible={() => setSuccessModalVisible(!successModalVisible)}
+            navigation={navigation}
+          />
+          <DeclinedModal
+            openModal={declinedModalVisible}
+            modalVisible={() => setDeclinedModalVisible(!declinedModalVisible)}
+            navigation={navigation}
+          />
+        </>
       </KeyboardAwareScrollView>
+      <Footer />
+      <ContactUs />
     </View>
   );
 };

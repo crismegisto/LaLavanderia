@@ -1,10 +1,11 @@
 import {StyleSheet} from 'react-native';
+import {primary, tertiary} from './colors';
 
 export default StyleSheet.create({
   container: {flex: 1, justifyContent: 'center'},
   title: {flex: 1, alignItems: 'center', justifyContent: 'flex-end'},
   textTitle: {
-    color: '#02193E',
+    color: primary,
     fontWeight: 'bold',
     fontSize: 35,
   },
@@ -15,7 +16,7 @@ export default StyleSheet.create({
   },
   containerLoginMethods: {alignItems: 'center', flex: 4},
   textContinue: {
-    color: '#02193E',
+    color: primary,
     fontWeight: 'bold',
     fontSize: 20,
     marginBottom: 5,
@@ -40,14 +41,14 @@ export default StyleSheet.create({
     color: '#808e9b',
   },
   signupButton: {
-    backgroundColor: 'olivedrab',
+    backgroundColor: tertiary,
     paddingVertical: 12,
     borderRadius: 10,
     marginTop: 15,
     width: '85%',
   },
   signinButton: {
-    backgroundColor: '#02193E',
+    backgroundColor: primary,
     paddingVertical: 12,
     borderRadius: 10,
     marginTop: 15,
@@ -84,7 +85,7 @@ export default StyleSheet.create({
   googleButtonText: {
     fontSize: 18,
     marginLeft: 15,
-    color: '#02193E',
+    color: primary,
   },
   registerButton: {
     borderRadius: 10,
@@ -99,7 +100,7 @@ export default StyleSheet.create({
     alignSelf: 'center',
   },
   linesLeft: {
-    backgroundColor: '#02193E',
+    backgroundColor: primary,
     height: 2,
     flex: 1,
     alignSelf: 'center',
@@ -107,7 +108,7 @@ export default StyleSheet.create({
     marginRight: 5,
   },
   linesRight: {
-    backgroundColor: '#02193E',
+    backgroundColor: primary,
     height: 2,
     flex: 1,
     alignSelf: 'center',
@@ -118,6 +119,6 @@ export default StyleSheet.create({
     alignSelf: 'center',
     paddingHorizontal: 5,
     fontSize: 20,
-    color: '#02193E',
+    color: primary,
   },
 });

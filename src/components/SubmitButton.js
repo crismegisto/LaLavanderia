@@ -13,8 +13,9 @@ const EditButton = (props) => {
         backgroundColor: 'rgba(26,137,40,0.7)',
         alignItems: 'center',
         justifyContent: 'center',
-        alignSelf: 'flex-end',
-        marginRight: 15,
+        position: 'absolute',
+        bottom: 40,
+        left: 20,
       }}
       onPress={props.onPress}>
       <Icon name="ios-save" size={40} color="white" />

@@ -1,17 +1,34 @@
-/* eslint-disable no-undef */
 import React, {useState, useEffect} from 'react';
 import {View, Image, Text, TouchableOpacity} from 'react-native';
-import styles from '../../stylesheets/styleSignIn';
-import auth from '@react-native-firebase/auth';
-import {signIn} from '../../store/actions/authAction';
-import GoogleSignIn from '../../components/GoogleSignIn';
-import FacebookSignIn from '../../components/FacebookSignIn';
-import PhoneAuth from './PhoneAuth';
-import {useSelector} from 'react-redux';
+import styles from '../../theme/styleSignIn';
+import GoogleSignIn from '../../components/authFlow/GoogleSignIn';
+import {useSelector, useDispatch} from 'react-redux';
 import DataForm from './DataForm';
+import {getCustomerData} from '../../api/getCustomerData';
+import {fillOutData} from '../../store/actions/authAction';
+import Loader from '../../components/Loader';
 
 const SignIn = ({navigation}) => {
+  const dispatch = useDispatch();
+  const [isFetching, setIsFetching] = useState(false);
   const {uid} = useSelector((state) => state.userData.user);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsFetching(true);
+        const results = await getCustomerData(uid);
+        setIsFetching(false);
+        dispatch(fillOutData(results));
+      } catch (err) {
+        console.log(err);
+        setIsFetching(false);
+      }
+    };
+
+    if (uid) {
+      fetchData();
+    }
+  }, [dispatch, uid]);
 
   if (!uid) {
     return (
@@ -32,7 +49,9 @@ const SignIn = ({navigation}) => {
             <Text style={styles.textBetweenLines}>O</Text>
             <View style={styles.linesRight} />
           </View>
-          <TouchableOpacity style={styles.signupButton}>
+          <TouchableOpacity
+            style={styles.signupButton}
+            onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.loginButtonText}>Crear Nueva Cuenta</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -43,6 +62,10 @@ const SignIn = ({navigation}) => {
         </View>
       </View>
     );
+  }
+
+  if (isFetching) {
+    return <Loader />;
   }
 
   return <DataForm />;

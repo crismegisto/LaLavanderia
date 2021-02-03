@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {TouchableOpacity, Image, Text} from 'react-native';
 import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
 import auth from '@react-native-firebase/auth';
-import styles from '../stylesheets/styleSignIn';
+import styles from '../../theme/styleSignIn';
 
 const SignInGoogle = () => {
   useEffect(() => {
@@ -40,7 +40,7 @@ const SignInGoogle = () => {
   return (
     <TouchableOpacity style={styles.googleButton} onPress={signIn}>
       <Image
-        source={require('../assets/google-icon.png')}
+        source={require('../../assets/google-icon.png')}
         style={styles.googleIcon}
       />
       <Text style={styles.googleButtonText}>Iniciar Sesión con Google</Text>

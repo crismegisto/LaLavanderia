@@ -1,17 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Platform,
-  TouchableOpacity,
-  Text,
-  Alert,
-} from 'react-native';
+import {View, Platform, TouchableOpacity, Text, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
-
-Icon.loadFont();
+import styles from '../theme/styleShoppingCartIcon';
+import {sextenary} from '../theme/colors';
 
 //Component that shows the cart icon in the upper left of the header and is constantly updated with redux
 const ShoppingCartIcon = (props) => {
@@ -40,46 +33,19 @@ const ShoppingCartIcon = (props) => {
   return (
     <View
       style={[
-        {padding: 5},
-        Platform.OS == 'android' ? styles.iconContainer : null,
+        styles.container,
+        Platform.OS === 'android' ? styles.iconContainer : null,
       ]}>
       <TouchableOpacity onPress={goToPay}>
         {totalQuantity > 0 && (
-          <View
-            style={{
-              position: 'absolute',
-              height: 25,
-              width: 25,
-              borderRadius: 15,
-              backgroundColor: 'rgba(220,44,44,0.7)',
-              right: 15,
-              bottom: 15,
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 2000,
-            }}>
-            <Text style={{color: 'white', fontWeight: 'bold', fontSize: 12}}>
-              {totalQuantity}
-            </Text>
+          <View style={styles.counter}>
+            <Text style={styles.counterText}>{totalQuantity}</Text>
           </View>
         )}
-        <Icon name="ios-cart" size={30} color="#02193E" />
+        <Icon name="ios-cart" size={30} color={sextenary} />
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  iconContainer: {
-    paddingLeft: 20,
-    paddingTop: 10,
-    marginRight: 5,
-  },
-});
 
 export default ShoppingCartIcon;

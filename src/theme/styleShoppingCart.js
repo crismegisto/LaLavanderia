@@ -16,7 +16,7 @@ export default StyleSheet.create({
   nextButton: {
     backgroundColor: '#02193E',
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: 30,
     marginBottom: 10,
     marginTop: 10,
     width: '40%',

@@ -19,7 +19,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#C8D6DE',
     alignItems: 'center',
-    width: '85%',
+    width: '88%',
     height: 50,
     paddingHorizontal: 10,
     borderRadius: 10,

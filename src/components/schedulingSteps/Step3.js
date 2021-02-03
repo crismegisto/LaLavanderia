@@ -6,37 +6,55 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import {getDelivery} from '../../api/collectionAndDelivery/getDeliveryApi';
+import {getCollection} from '../../api/collectionAndDelivery/getCollectionApi';
+import RNPickerSelect from 'react-native-picker-select';
+import changeMonthFormat from '../../utils/changeMonthFormat';
 
 const Step3 = (props) => {
-  const [selectedDeliveryDate, setSelectedDeliveryDate] = useState({});
-  const [deliveryDate, setDeliveryDate] = useState([]);
+  const [pickUpSchedule, setPickUpSchedule] = useState([
+    {label: 'Sin horarios', value: 0},
+  ]);
+  const [selectedCollectionDate, setSelectedCollectionDate] = useState({});
+  const [collectionDate, setCollectionDate] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const results = await getDelivery();
-        let newResults = results.map((item) => ({...item, isSelected: false}));
-        setDeliveryDate(newResults);
+        const results = await getCollection();
+        let newResults = results
+          .map((item) => ({...item, isSelected: false}))
+          .filter(
+            (item) => item.horario_recogida_zona === props.zone[0].zona_codigo,
+          );
+        setCollectionDate(newResults);
       } catch (error) {}
     };
 
     fetchData();
-  }, []);
+  }, [props.zone]);
 
   useEffect(() => {
-    if (Object.keys(selectedDeliveryDate).length > 0) {
-      props.getDeliveryDate(selectedDeliveryDate);
+    if (Object.keys(selectedCollectionDate).length > 0) {
+      props.getCollectionDate(selectedCollectionDate);
+      let newArr = selectedCollectionDate.horas.map((item) => ({
+        label:
+          'hora desde: ' +
+          item.horarios_recogida_horas_hora_desde +
+          '\t-\t hora hasta: ' +
+          item.horarios_recogida_horas_hora_hasta,
+        value: `hora desde: ${item.horarios_recogida_horas_hora_desde}	-	 hora hasta: ${item.horarios_recogida_horas_hora_hasta}`,
+      }));
+      setPickUpSchedule(newArr);
     }
-  }, [selectedDeliveryDate, props]);
+  }, [selectedCollectionDate, props]);
 
   const onSelection = (selection) => {
-    let newDeliveryDate = deliveryDate.map((item) =>
+    let newCollectionDate = collectionDate.map((item) =>
       selection.id === item.id
         ? {...item, isSelected: true}
         : {...item, isSelected: false},
     );
-    setDeliveryDate(newDeliveryDate);
-    setSelectedDeliveryDate(selection);
+    setCollectionDate(newCollectionDate);
+    setSelectedCollectionDate(selection);
   };
 
   return (
@@ -49,14 +67,14 @@ const Step3 = (props) => {
           marginVertical: 10,
           fontWeight: 'bold',
         }}>
-        Fecha y Hora de Entrega
+        Fecha y Hora de Recogida
       </Text>
       <View style={{alignItems: 'center'}}>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={true}
           scrollEventThrottle={16}>
-          {deliveryDate.map((item, index) => (
+          {collectionDate.map((item, index) => (
             <TouchableOpacity
               key={index}
               onPress={() => onSelection(item)}
@@ -71,7 +89,7 @@ const Step3 = (props) => {
                     ? {...styles.buttonCardText, color: '#98D7E8'}
                     : styles.buttonCardText
                 }>
-                {item.horario_entrega_fecha.split('-')[2]}
+                {item.horario_recogida_fecha.split('-')[2]}
               </Text>
               <Text
                 style={
@@ -79,19 +97,31 @@ const Step3 = (props) => {
                     ? {...styles.buttonCardDateText, color: '#98D7E8'}
                     : styles.buttonCardDateText
                 }>
-                {item.horario_entrega_fecha.split('-')[1] === '12'
-                  ? 'DIC.'
-                  : 'ENE.'}
+                {changeMonthFormat(item.horario_recogida_fecha)}
               </Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
         <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 20}}>
-          Horario Desde: {selectedDeliveryDate.horario_entrega_hora_desde}
+          Seleccionar Horario
         </Text>
-        <Text style={{fontSize: 16, fontWeight: 'bold', marginTop: 20}}>
-          Horario Hasta: {selectedDeliveryDate.horario_entrega_hora_hasta}
-        </Text>
+        <RNPickerSelect
+          placeholder={{
+            label: 'Horarios',
+            value: null,
+            color: 'green',
+          }}
+          onValueChange={(value) => props.getCollectionHour(value)}
+          // value={typePerson}
+          items={pickUpSchedule}
+          style={{
+            inputAndroid: {
+              color: 'black',
+              height: 50,
+              width: '90%',
+            },
+          }}
+        />
       </View>
     </View>
   );

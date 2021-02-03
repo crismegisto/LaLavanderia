@@ -1,6 +1,6 @@
 import {ipAddress} from '../keys';
 
-export const createClientApi = async (data) => {
+export const createClient = async (data) => {
   const response = await fetch(
     `http://${ipAddress}/lalavanderia/public/api/clientes`,
     {

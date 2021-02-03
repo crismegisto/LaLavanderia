@@ -6,6 +6,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    borderBottomEndRadius: 25,
+    borderBottomStartRadius: 25,
   },
   activeMethod: {
     borderColor: '#02193E',

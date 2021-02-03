@@ -1,11 +1,17 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  ImageBackground,
+  Image,
+} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {Avatar, Title, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import styles from '../stylesheets/styleDrawer';
+import styles from '../theme/styleDrawer';
+import {primary, sextenary} from '../theme/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {signOut} from '../store/actions/authAction';
 import auth from '@react-native-firebase/auth';
@@ -24,10 +30,16 @@ function CustomDrawerContent(props) {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={styles.container}>
       <View style={styles.drawerContent}>
-        <DrawerContentScrollView {...props}>
-          <View style={styles.userInfoSection}>
+        <ImageBackground
+          source={require('../assets/drawer_image.png')}
+          style={{
+            alignItems: 'center',
+            height: 180,
+          }}>
+          <View
+            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Avatar.Image
               source={{
                 uri: userData.user.photo,
@@ -36,12 +48,19 @@ function CustomDrawerContent(props) {
             />
             <Title style={styles.title}>{userData.user.displayName}</Title>
           </View>
+        </ImageBackground>
 
-          <View style={styles.partingLine} />
+        <DrawerContentScrollView {...props}>
+          {/* <View style={styles.dividingLine} /> */}
 
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
-              icon={() => <Icon name="ios-basket" size={30} color="#02193E" />}
+              icon={() => (
+                <Image
+                  source={require('../assets/icons-drawer/perfil.png')}
+                  style={{width: 45, height: 45}}
+                />
+              )}
               labelStyle={styles.titleItem}
               label="Ver Saldos"
               onPress={() => {
@@ -49,35 +68,62 @@ function CustomDrawerContent(props) {
               }}
             />
             <DrawerItem
-              icon={() => <Icon name="ios-person" size={30} color="#02193E" />}
+              icon={() => (
+                <Image
+                  source={require('../assets/icons-drawer/perfil.png')}
+                  style={{width: 45, height: 45}}
+                />
+              )}
               labelStyle={styles.titleItem}
-              label="Cuenta"
+              label="Mi Perfil"
               onPress={() => {
                 props.navigation.navigate('AccountStack');
               }}
+            />
+            <DrawerItem
+              icon={() => (
+                <Image
+                  source={require('../assets/icons-drawer/precios.png')}
+                  style={{width: 45, height: 45}}
+                />
+              )}
+              labelStyle={styles.titleItem}
+              label="Precios"
+              // onPress={() => {
+              //   props.navigation.navigate('AccountStack');
+              // }}
             />
           </Drawer.Section>
         </DrawerContentScrollView>
       </View>
 
-      <View
+      <ImageBackground
+        source={require('../assets/footer.png')}
         style={{
           flex: 1,
-          justifyContent: 'flex-end',
+          resizeMode: 'cover',
+          justifyContent: 'center',
           alignItems: 'center',
-          marginBottom: 30,
         }}>
         <TouchableOpacity
           style={{
             flexDirection: 'row',
+            marginTop: 20,
+            alignItems: 'center',
           }}
           onPress={onSignOut}>
-          <Text style={{fontSize: 16, marginRight: 10, color: '#02193E'}}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              marginRight: 10,
+              color: sextenary,
+            }}>
             Cerrar Sesión
           </Text>
-          <MaterialIcons name="logout" size={20} color="#02193E" />
+          <MaterialIcons name="logout" size={20} color={sextenary} />
         </TouchableOpacity>
-      </View>
+      </ImageBackground>
     </View>
   );
 }

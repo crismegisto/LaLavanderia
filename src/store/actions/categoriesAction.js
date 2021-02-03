@@ -13,15 +13,6 @@ export const invalidateCategories = () => ({
   type: 'INVALIDATE_CATEGORIES',
 });
 
-export const reviewedCategory = (id) => ({
-  type: 'REVIEWED_CATEGORY',
-  id,
-});
-
-export const allReviewed = () => ({
-  type: 'ALL_REVIEWED',
-});
-
 export const fetchCategories = () => {
   let url = `http://${ipAddress}/lalavanderia/public/api/categorias?lista=2`;
   return async (dispatch) => {

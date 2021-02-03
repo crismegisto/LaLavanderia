@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {secondary, sextenary} from '../../theme/colors';
 
 const FormField = (props) => {
   const [registry, setRegistry] = useState('');
@@ -16,6 +17,8 @@ const FormField = (props) => {
 
     if (props.title === 'Nombres' || props.title === 'Apellidos') {
       newText = text.replace(/[^a-zA-Z ]/g, '');
+    } else if (props.title === 'Detalles Dirección') {
+      console.log('wooo');
     } else {
       newText = text.replace(/[^0-9 ]/g, '').replace(/\s/g, '');
     }
@@ -41,8 +44,8 @@ const FormField = (props) => {
           keyboardType={props.keyboardType}
           autoCapitalize="words"
           maxLength={props.maxLength}
-          placeholder={`Introduzca ${props.title}`}
-          placeholderTextColor="dodgerblue"
+          placeholder={props.placeholder}
+          placeholderTextColor={secondary}
           value={registry}
           onChangeText={(text) => handleFormChange(text)}
         />
@@ -58,7 +61,7 @@ const FormField = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#C8D6DE',
+    backgroundColor: sextenary,
     width: '95%',
     height: 50,
     paddingHorizontal: 10,

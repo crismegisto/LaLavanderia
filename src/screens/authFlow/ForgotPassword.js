@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, Platform} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Input} from 'react-native-elements';
-import styles from '../../stylesheets/styleForgotPassword';
+import styles from '../../theme/styleForgotPassword';
 
 const ForgotPassword = ({navigation}) => {
   return (

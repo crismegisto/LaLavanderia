@@ -3,7 +3,7 @@ import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import styles from '../../stylesheets/styleLogin';
+import styles from '../../theme/styleLogin';
 import auth from '@react-native-firebase/auth';
 
 const Login = ({navigation}) => {

@@ -46,12 +46,12 @@ function IndexNavigation() {
   const {document} = useSelector((state) => state.userData.user);
   useEffect(() => {
     function onAuthStateChanged(user) {
+      console.log(user);
       if (user && !document) {
         dispatch(
           signIn({
             displayName: user.displayName,
             email: user.email,
-            phoneNumber: user.phoneNumber,
             photo: user.photoURL,
             uid: user.uid,
           }),
@@ -112,6 +112,7 @@ function IndexNavigation() {
             activeTintColor: '#e91e63',
             itemStyle: {marginVertical: 30},
           }}
+          drawerType="slide"
           initialRouteName="HomeStack"
           drawerContent={(props) => <CustomDrawerContent {...props} />}>
           <Drawer.Screen name="HomeStack" component={HomeStack} />

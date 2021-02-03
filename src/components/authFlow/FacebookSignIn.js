@@ -1,6 +1,6 @@
 import React from 'react';
 import {SocialIcon} from 'react-native-elements';
-import styles from '../stylesheets/styleSignIn';
+import styles from '../../stylesheets/styleSignIn';
 
 const SignInFacebook = () => {
   return (

@@ -1,110 +1,88 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity, Alert} from 'react-native';
-import FormField from '../../components/FormField';
+import {View, Text, Alert} from 'react-native';
+import Form from '../../components/authFlow/Form';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import styles from '../../stylesheets/styleDataForm';
+import styles from '../../theme/styleDataForm';
 import {useDispatch, useSelector} from 'react-redux';
-import {createClientApi} from '../../api/createClientApi';
+import {createClient} from '../../api/createClient';
 import {fillOutData} from '../../store/actions/authAction';
+import useDetermineZone from '../../hooks/useDetermineZone';
+import Spinner from 'react-native-loading-spinner-overlay';
+import {quaternary} from '../../theme/colors';
 
 const DataForm = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.userData.user);
 
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [address, setAddress] = useState('');
-  const [document, setDocument] = useState('');
-  const [isFormsValid, setIsFormsValid] = useState(false);
-  const [startValidate, setStartValidate] = useState(false);
-
+  const [validatedFormData, setValidatedFormData] = useState({});
+  const {activeZone, isLoading} = useDetermineZone(address);
+  console.log(validatedFormData, activeZone, isLoading);
   useEffect(() => {
-    if (name && lastName && phoneNumber && address && document) {
-      setIsFormsValid(true);
-    } else {
-      setIsFormsValid(false);
-    }
-  }, [address, document, lastName, name, phoneNumber]);
-
-  const commitForm = async () => {
-    if (!startValidate) {
-      setStartValidate(true);
-    }
-
-    if (isFormsValid) {
+    const fetchData = async () => {
       let newData = {
-        cliente_nombres: name,
-        cliente_apellidos: lastName,
+        cliente_nombres: validatedFormData.firstName,
+        cliente_apellidos: validatedFormData.lastName,
         cliente_email: userData.email,
-        cliente_telefono: phoneNumber,
+        cliente_telefono: validatedFormData.phoneNumber,
         cliente_direccion1: address,
         cliente_tipo_documento: 'C.C.',
-        cliente_documento: document,
+        cliente_documento: validatedFormData.document,
         cliente_codigo: '1',
         cliente_redes: userData.uid,
       };
       try {
-        await createClientApi(newData);
+        await createClient(newData);
+        let displayName = userData.displayName
+          ? userData.displayName
+          : validatedFormData.firstName.split(' ')[0] +
+            validatedFormData.lastName.split(' ')[0];
         dispatch(
           fillOutData({
-            name,
-            lastName,
-            phoneNumber,
+            displayName,
+            firstName: validatedFormData.firstName,
+            lastName: validatedFormData.lastName,
+            phoneNumber: validatedFormData.phoneNumber,
             address1: address,
-            document,
+            document: validatedFormData.document,
           }),
         );
       } catch (err) {
         Alert.alert(err.message);
       }
+    };
+
+    if (Object.keys(validatedFormData).length > 0 && activeZone && !isLoading) {
+      fetchData();
+    } else {
+      if (Object.keys(validatedFormData).length > 0 && !activeZone) {
+        Alert.alert(
+          'Lo sentimos',
+          'En este momento no tenemos cobertura en tu zona.',
+        );
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [validatedFormData, activeZone, isLoading]);
+
+  const onSubmit = (data) => {
+    setAddress(data.address);
+    setValidatedFormData(data);
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container1}>
+      <Spinner
+        visible={isLoading}
+        textContent={'Validando dirección...'}
+        textStyle={{color: quaternary}}
+        color={quaternary}
+      />
       <KeyboardAwareScrollView>
         <View style={styles.formContainer}>
           <Text style={styles.formTitle}>DETALLES DE CONTACTO</Text>
-          <FormField
-            title="Nombres"
-            keyboardType="default"
-            maxLength={25}
-            setRegistry={(value) => setName(value)}
-            showError={startValidate}
-          />
-          <FormField
-            title="Apellidos"
-            keyboardType="default"
-            maxLength={25}
-            setRegistry={(value) => setLastName(value)}
-            showError={startValidate}
-          />
-          <FormField
-            title="Teléfono"
-            keyboardType="number-pad"
-            maxLength={10}
-            setRegistry={(value) => setPhoneNumber(value)}
-            showError={startValidate}
-          />
-          <FormField
-            title="Dirección"
-            keyboardType="default"
-            maxLength={35}
-            setRegistry={(value) => setAddress(value)}
-            showError={startValidate}
-          />
-          <FormField
-            title="Documento"
-            keyboardType="number-pad"
-            maxLength={11}
-            setRegistry={(value) => setDocument(value)}
-            showError={startValidate}
-          />
+          <Form onSubmit={onSubmit} />
         </View>
-        <TouchableOpacity style={styles.button} onPress={commitForm}>
-          <Text style={styles.buttonText}>CONTINUAR</Text>
-        </TouchableOpacity>
       </KeyboardAwareScrollView>
     </View>
   );

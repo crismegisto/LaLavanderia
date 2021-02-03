@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, TouchableOpacity, StyleSheet, Linking, Image} from 'react-native';
+import {TouchableOpacity, Linking, Image} from 'react-native';
 
 const ContactUs = () => {
   const sendWhatsapp = async () => {
@@ -21,18 +21,5 @@ const ContactUs = () => {
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  bottom: {
-    flex: 1,
-    backgroundColor: '#98D7E8',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    color: '#02193E',
-    fontSize: 22,
-  },
-});
 
 export default ContactUs;

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Modal, Text, TouchableOpacity, View, Image} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {modifyPaymentMethod} from '../store/actions/modifyPaymentsAction';
-import styles from '../stylesheets/stylePaymentMethod';
+import styles from '../theme/stylePaymentMethod';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const PaymentMethod = (props) => {

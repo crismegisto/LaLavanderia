@@ -1,11 +1,12 @@
 import {StyleSheet} from 'react-native';
+import {primary} from '../theme/colors';
 
 export default StyleSheet.create({
   mainContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
+    flexGrow: 1,
   },
   stepsContainer: {
+    flex: 1,
     backgroundColor: 'white',
     borderRadius: 10,
     margin: 7,
@@ -28,14 +29,13 @@ export default StyleSheet.create({
   },
   stepCounter: {
     alignSelf: 'center',
-    marginBottom: 15,
     fontSize: 16,
     fontWeight: 'bold',
   },
   continueButton: {
-    backgroundColor: '#02193E',
+    backgroundColor: primary,
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: 30,
     marginBottom: 15,
     marginTop: 15,
     width: '60%',
@@ -49,9 +49,6 @@ export default StyleSheet.create({
   },
   productsContainer: {
     flex: 1,
-    marginTop: 10,
-    backgroundColor: 'white',
-    margin: 7,
     borderRadius: 10,
   },
 });

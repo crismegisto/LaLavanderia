@@ -1,13 +1,13 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import Icon from 'react-native-vector-icons/AntDesign';
 import AddRemoveButton from '../components/AddRemoveButton';
 import {
   addUnitToProduct,
   removeUnitToProduct,
   eliminateProduct,
 } from '../store/actions/productsAction';
+import {sextenary} from '../theme/colors';
 
 const ProductsInShoppingCart = () => {
   const productsInCart = useSelector((state) => state.productsInCart);
@@ -23,60 +23,35 @@ const ProductsInShoppingCart = () => {
 
   return (
     <FlatList
+      persistentScrollbar
       data={productsInCart}
+      ItemSeparatorComponent={() => (
+        <View style={{height: 5, backgroundColor: sextenary}} />
+      )}
+      ListFooterComponent={() => (
+        <View style={{height: 5, backgroundColor: sextenary}} />
+      )}
       keyExtractor={(item) => item.id.toString()}
       renderItem={({item}) => (
-        <View
-          style={{
-            borderRadius: 20,
-            backgroundColor: 'white',
-            margin: 5,
-          }}>
-          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-            <Text
-              style={{
-                marginTop: 15,
-                color: '#02193E',
-                fontSize: 18,
-                fontWeight: 'bold',
-              }}>
-              {item.name}
-            </Text>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 10,
-                fontSize: 16,
-                fontWeight: 'bold',
-                marginTop: 10,
-              }}>
-              <Icon
-                name="closecircle"
-                size={25}
-                color="#02193E"
-                onPress={() => dispatch(eliminateProduct(item.id))}
-              />
-            </TouchableOpacity>
-          </View>
+        <View style={{marginVertical: 8}}>
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-around',
+              justifyContent: 'space-between',
               alignItems: 'center',
-              margin: 10,
+              marginHorizontal: 15,
             }}>
             <AddRemoveButton
               quantity={item.quantity}
               remove={() => remove(item)}
               add={() => add(item.id)}
             />
+            <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+              {item.producto_nombre}
+            </Text>
             {item.precios.length > 0 && (
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: 'bold',
-                }}>
-                Total: ${item.precios[0].precio_valor * item.quantity}
+              <Text style={{fontSize: 16}}>
+                ${item.precios[0].precio_valor * item.quantity}
               </Text>
             )}
           </View>

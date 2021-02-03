@@ -3,8 +3,6 @@ import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 
-Icon.loadFont();
-
 const EditButton = (props) => {
   return (
     <TouchableOpacity
@@ -15,8 +13,9 @@ const EditButton = (props) => {
         backgroundColor: 'rgba(220,44,44,0.7)',
         alignItems: 'center',
         justifyContent: 'center',
-        alignSelf: 'flex-end',
-        marginRight: 15,
+        position: 'absolute',
+        bottom: 40,
+        left: 20,
       }}>
       <Icon name="pencil" size={40} color="white" onPress={props.onPress} />
     </TouchableOpacity>

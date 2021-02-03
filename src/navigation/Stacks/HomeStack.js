@@ -11,6 +11,7 @@ import Schedule from '../../screens/Schedule';
 import PickUp from '../../screens/PickUp';
 import ShoppingCartIcon from '../../components/ShoppingCartIcon';
 import {Platform, Image} from 'react-native';
+import {primary, sextenary} from '../../theme/colors';
 
 const Stack = createStackNavigator();
 
@@ -19,9 +20,9 @@ const HomeStack = ({navigation}) => (
     initialRouteName="Home"
     screenOptions={{
       headerStyle: {
-        backgroundColor: '#98D7E8',
+        backgroundColor: primary,
       },
-      headerTintColor: '#02193E',
+      headerTintColor: sextenary,
       headerTitleStyle: {
         fontWeight: 'bold',
       },
@@ -34,8 +35,9 @@ const HomeStack = ({navigation}) => (
         headerLeft: () => (
           <Ionicon
             name="ios-menu"
+            color={sextenary}
             size={35}
-            style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
+            style={[Platform.OS === 'ios' ? {bottom: 4} : null, {padding: 10}]}
             onPress={() => navigation.openDrawer()}
           />
         ),
@@ -62,6 +64,7 @@ const HomeStack = ({navigation}) => (
           <Ionicon
             name="ios-arrow-back"
             size={35}
+            color={sextenary}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
             onPress={() => navigation.navigate('Home')}
           />
@@ -79,6 +82,7 @@ const HomeStack = ({navigation}) => (
           <Ionicon
             name="ios-arrow-back"
             size={35}
+            color={sextenary}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
             onPress={() => navigation.navigate('Categories')}
           />
@@ -97,6 +101,7 @@ const HomeStack = ({navigation}) => (
           <Ionicon
             name="ios-arrow-back"
             size={35}
+            color={sextenary}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
             onPress={() => navigation.navigate('Home')}
           />
@@ -113,6 +118,7 @@ const HomeStack = ({navigation}) => (
           <Ionicon
             name="ios-arrow-back"
             size={35}
+            color={sextenary}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
             onPress={() => navigation.goBack()}
           />

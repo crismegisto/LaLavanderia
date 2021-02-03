@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import Ionicon from 'react-native-vector-icons/AntDesign';
 import Pdf from 'react-native-pdf';
-import styles from '../stylesheets/styleTermsAndConditions';
+import styles from '../theme/styleTermsAndConditions';
 
 const PDFReader = ({navigation}) => {
   const source = {
