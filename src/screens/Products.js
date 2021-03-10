@@ -16,18 +16,23 @@ import {
 } from '../store/actions/productsAction';
 import styles from '../theme/styleProducts';
 import AddRemoveButton from '../components/AddRemoveButton';
-import Header from '../components/Header';
 import {primary, sextenary} from '../theme/colors';
+import MeasurementsModal from '../components/modals/MeasurementsModal';
 
 const Products = (props) => {
   const dispatch = useDispatch();
+
+  const [showMeasurements, setShowMeasurements] = useState(false);
+
+  const categories = useSelector(
+    (state) => state.categories.categoriesData[props.route.params.index],
+  );
   const products = useSelector(
     (state) =>
       state.categories.categoriesData[props.route.params.index].productos,
   );
   const productsInCart = useSelector((state) => state.productsInCart);
 
-  // const [navigateCategories, setNavigateCategories] = useState(false);
   useEffect(() => {
     props.navigation.setOptions({title: props.route.params.title});
   }, [props.navigation, props.route.params.title]);
@@ -41,14 +46,11 @@ const Products = (props) => {
     setLocalProducts(newAdditional);
   }, [products]);
 
-  // const toggleProduct = (product) => {
-  //   const newLocalProducts = localProducts.map((item) =>
-  //     item.id === product.id ? {...item, isSelected: !item.isSelected} : item,
-  //   );
-  //   setLocalProducts(newLocalProducts);
-  // };
-
   const toggleAddButton = (product, index) => {
+    console.log(product);
+    if (product.producto_medida) {
+      setShowMeasurements(true);
+    }
     const filterProductById = productsInCart.filter(
       (item) => item.id === product.id,
     );
@@ -98,8 +100,22 @@ const Products = (props) => {
 
   return (
     <View style={styles.container}>
-      <Header />
+      <MeasurementsModal
+        visible={showMeasurements}
+        hideModal={() => setShowMeasurements(false)}
+      />
       <View style={styles.containerList}>
+        {categories.categoria_descripcion && (
+          <Text
+            style={{
+              margin: 7,
+              alignSelf: 'center',
+              fontSize: 16,
+              fontWeight: 'bold',
+            }}>
+            {categories.categoria_descripcion}
+          </Text>
+        )}
         <FlatList
           persistentScrollbar
           data={localProducts}
@@ -111,6 +127,7 @@ const Products = (props) => {
                   ? {...styles.containerRenderItem, backgroundColor: primary}
                   : styles.containerRenderItem
               }
+              disabled={item.quantity > 0}
               onPress={() => toggleAddButton(item, index)}>
               <></>
               <View
@@ -135,10 +152,8 @@ const Products = (props) => {
                   }>
                   Precio: ${item.precios[0].precio_valor}
                 </Text>
-                {item.quantity > 0 &&
-                  (!props.route.params.title
-                    .toLowerCase()
-                    .includes('planes') ? (
+                {item.quantity > 0 ? (
+                  !props.route.params.title.toLowerCase().includes('planes') ? (
                     <AddRemoveButton
                       quantity={item.quantity}
                       remove={() => remove(item, index)}
@@ -151,7 +166,12 @@ const Products = (props) => {
                       remove={() => remove(item, index)}
                       textColor={sextenary}
                     />
-                  ))}
+                  )
+                ) : item.producto_descripcion ? (
+                  <Text>{item.producto_descripcion}</Text>
+                ) : (
+                  <></>
+                )}
               </View>
               <></>
               <Image

@@ -36,10 +36,10 @@ const SignIn = ({navigation}) => {
         <View style={styles.title}>
           <Text style={styles.textTitle}>LALAVANDERIA</Text>
         </View>
-        <View style={{flex: 4, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={styles.containerLogo}>
           <Image
             source={require('../../assets/icon-laundry.png')}
-            style={{width: '75%', height: '75%', resizeMode: 'contain'}}
+            style={styles.logo}
           />
         </View>
         <View style={styles.containerLoginMethods}>

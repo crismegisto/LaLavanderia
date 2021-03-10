@@ -8,19 +8,19 @@ import {
 } from '../../keys';
 
 export const getAcceptanceToken = async () => {
-  const response = await fetch(production + '/merchants/' + pub_prod);
+  const response = await fetch(sandbox + '/merchants/' + pub_test);
   const results = await response.json();
   return results.data.presigned_acceptance.acceptance_token;
 };
 
 export const createTransaction = async (acceptanceToken, data) => {
   const date = Date.now();
-  const response = await fetch(production + '/transactions', {
+  const response = await fetch(sandbox + '/transactions', {
     method: 'POST',
     headers: {
       Accept: '*/*',
       'content-type': 'application/json',
-      Authorization: 'Bearer ' + pub_prod,
+      Authorization: 'Bearer ' + pub_test,
     },
     body: JSON.stringify({
       acceptance_token: acceptanceToken,
@@ -49,7 +49,7 @@ export const createTransaction = async (acceptanceToken, data) => {
 };
 
 export const checkTransaction = async (id) => {
-  let response = await fetch(production + '/transactions/' + id);
+  let response = await fetch(sandbox + '/transactions/' + id);
   const results = await response.json();
   console.log(results);
   return results.data;

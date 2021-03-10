@@ -46,11 +46,11 @@ const ProductsInShoppingCart = () => {
               remove={() => remove(item)}
               add={() => add(item.id)}
             />
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+            <Text style={{fontSize: 14, fontWeight: 'bold'}}>
               {item.producto_nombre}
             </Text>
             {item.precios.length > 0 && (
-              <Text style={{fontSize: 16}}>
+              <Text style={{fontSize: 14}}>
                 ${item.precios[0].precio_valor * item.quantity}
               </Text>
             )}

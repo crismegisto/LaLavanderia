@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {primary} from './colors';
 
 export default StyleSheet.create({
   container: {
@@ -9,7 +10,6 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   payment: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
@@ -20,21 +20,12 @@ export default StyleSheet.create({
     flexDirection: 'row',
   },
   paymentButton: {
-    backgroundColor: '#02193E',
+    backgroundColor: primary,
     paddingVertical: 12,
-    borderRadius: 10,
+    borderRadius: 30,
     marginBottom: 10,
     marginTop: 7,
-    width: '60%',
-    alignSelf: 'center',
-  },
-  paymentButtonDisable: {
-    backgroundColor: 'gray',
-    paddingVertical: 12,
-    borderRadius: 10,
-    marginBottom: 10,
-    marginTop: 7,
-    width: '60%',
+    width: '50%',
     alignSelf: 'center',
   },
   paymentButtonText: {

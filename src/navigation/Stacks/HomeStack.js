@@ -8,10 +8,11 @@ import Home from '../../screens/Home';
 import Categories from '../../screens/Categories';
 import Products from '../../screens/Products';
 import Schedule from '../../screens/Schedule';
-import PickUp from '../../screens/PickUp';
 import ShoppingCartIcon from '../../components/ShoppingCartIcon';
-import {Platform, Image} from 'react-native';
-import {primary, sextenary} from '../../theme/colors';
+import {Platform, Image, Dimensions} from 'react-native';
+import {sextenary} from '../../theme/colors';
+
+let {width} = Dimensions.get('window');
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,7 @@ const HomeStack = ({navigation}) => (
     initialRouteName="Home"
     screenOptions={{
       headerStyle: {
-        backgroundColor: primary,
+        height: 85,
       },
       headerTintColor: sextenary,
       headerTitleStyle: {
@@ -32,6 +33,12 @@ const HomeStack = ({navigation}) => (
       component={Home}
       options={{
         headerTitleAlign: 'center',
+        headerBackground: () => (
+          <Image
+            source={require('../../assets/bubbles.png')}
+            style={{height: 85, width}}
+          />
+        ),
         headerLeft: () => (
           <Ionicon
             name="ios-menu"
@@ -60,6 +67,12 @@ const HomeStack = ({navigation}) => (
       options={{
         title: 'Categorías',
         headerTitleAlign: 'center',
+        headerBackground: () => (
+          <Image
+            source={require('../../assets/bubbles.png')}
+            style={{height: 85, width}}
+          />
+        ),
         headerLeft: () => (
           <Ionicon
             name="ios-arrow-back"
@@ -78,6 +91,12 @@ const HomeStack = ({navigation}) => (
       options={{
         title: '',
         headerTitleAlign: 'center',
+        headerBackground: () => (
+          <Image
+            source={require('../../assets/bubbles.png')}
+            style={{height: 85, width}}
+          />
+        ),
         headerLeft: () => (
           <Ionicon
             name="ios-arrow-back"
@@ -97,6 +116,12 @@ const HomeStack = ({navigation}) => (
       options={{
         title: 'Agendar Servicio',
         headerTitleAlign: 'center',
+        headerBackground: () => (
+          <Image
+            source={require('../../assets/bubbles.png')}
+            style={{height: 85, width}}
+          />
+        ),
         headerLeft: () => (
           <Ionicon
             name="ios-arrow-back"
@@ -104,23 +129,6 @@ const HomeStack = ({navigation}) => (
             color={sextenary}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
             onPress={() => navigation.navigate('Home')}
-          />
-        ),
-      }}
-    />
-    <Stack.Screen
-      name="PickUp"
-      component={PickUp}
-      options={{
-        title: 'Recogida',
-        headerTitleAlign: 'center',
-        headerLeft: () => (
-          <Ionicon
-            name="ios-arrow-back"
-            size={35}
-            color={sextenary}
-            style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
-            onPress={() => navigation.goBack()}
           />
         ),
       }}

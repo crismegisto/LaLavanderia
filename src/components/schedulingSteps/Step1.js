@@ -1,108 +1,116 @@
 import React, {useState, useEffect} from 'react';
-import {View, TouchableOpacity, Text} from 'react-native';
+import {View, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
-import {primary, secondary, tertiary, sextenary} from '../../theme/colors';
-import geocoding from '../../api/geocoding';
-import CheckBox from '@react-native-community/checkbox';
-import AddAddress from '../modals/AddAddress';
+import {TextInput} from 'react-native-paper';
+import {primary, secondary, sextenary} from '../../theme/colors';
 
 const Step1 = (props) => {
-  let addresses = [
-    useSelector((state) => state.userData.user.address1),
-    useSelector((state) => state.userData.user.address2),
-    useSelector((state) => state.userData.user.address3),
-  ].filter((item) => item);
-
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
-  const [newAddress, setNewAddress] = useState('');
-  const [location, setLocation] = useState(null);
+  const balance = useSelector((state) => state.balance.balanceUser);
+  const [balanceToSchedule, setBalanceToSchedule] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
-      setLocation(await geocoding(newAddress));
-    };
-
-    fetchData();
-  }, [newAddress]);
+    let newArr = balance.map((item) => ({...item, currentValue: 0}));
+    setBalanceToSchedule(newArr);
+  }, [balance]);
 
   useEffect(() => {
-    location && newAddress
-      ? props.getAddress(newAddress)
-      : props.getAddress(null);
-  }, [location, newAddress, props]);
+    let productsToUse = balanceToSchedule.filter(
+      (item) => item.currentValue > 0,
+    );
+    props.getProductsToUse(productsToUse);
+  }, [balanceToSchedule, props]);
 
-  const [showModal, setShowModal] = useState(false);
+  const addUnitToSchedule = (id) => {
+    let newArr = balanceToSchedule.map((item) =>
+      id === item.id && item.saldo_cantidad > item.currentValue
+        ? {...item, currentValue: ++item.currentValue}
+        : item,
+    );
+    setBalanceToSchedule(newArr);
+  };
+
+  const removeUnitToSchedule = (id) => {
+    let newArr = balanceToSchedule.map((item) =>
+      id === item.id && item.currentValue > 0
+        ? {...item, currentValue: --item.currentValue}
+        : item,
+    );
+    setBalanceToSchedule(newArr);
+  };
 
   return (
-    <View>
-      <Text
-        style={{
-          fontSize: 16,
-          fontWeight: 'bold',
-          marginTop: 20,
-          marginLeft: 20,
-        }}>
-        Direcciones Guardadas
-      </Text>
-      {addresses.map((item, index) => (
-        <View key={index} style={{marginVertical: 8}}>
-          <TouchableOpacity
-            onPress={() => setNewAddress(item)}
-            style={{
-              backgroundColor: secondary,
-              width: '80%',
-              alignSelf: 'center',
-              marginTop: 10,
-              borderRadius: 30,
-              height: 40,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text style={{fontSize: 16, color: primary}}>{item}</Text>
-          </TouchableOpacity>
+    <FlatList
+      data={balanceToSchedule}
+      persistentScrollbar
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({item}) => (
+        <View style={styles.container}>
+          <TextInput
+            style={{margin: 7, fontSize: 17, width: '65%'}}
+            dense
+            mode="outlined"
+            label={item.saldo_cantidad + '  disponibles'}
+            disabled={true}
+            value={item.currentValue + '  ' + item.producto.producto_nombre}
+            theme={{colors: {disabled: primary, text: primary}}}
+          />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={() => removeUnitToSchedule(item.id)}
+              disabled={!item.currentValue}
+              style={
+                item.currentValue
+                  ? [styles.button, {marginRight: 5}]
+                  : {
+                      ...styles.button,
+                      backgroundColor: sextenary,
+                      marginRight: 5,
+                    }
+              }>
+              <Ionicons name="ios-remove" size={25} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => addUnitToSchedule(item.id)}
+              disabled={item.currentValue === item.saldo_cantidad}
+              style={
+                item.currentValue < item.saldo_cantidad
+                  ? [styles.button, {marginRight: 5}]
+                  : {
+                      ...styles.button,
+                      backgroundColor: sextenary,
+                      marginRight: 5,
+                    }
+              }>
+              <Ionicons name="ios-add" size={25} color="white" />
+            </TouchableOpacity>
+          </View>
         </View>
-      ))}
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginTop: 10,
-        }}>
-        <Text style={{fontSize: 16, fontWeight: 'bold'}}>Portería</Text>
-        <CheckBox
-          disabled={false}
-          value={toggleCheckBox}
-          onValueChange={(newValue) => setToggleCheckBox(newValue)}
-        />
-      </View>
-      <AddAddress
-        visible={showModal}
-        hideModal={() => setShowModal(false)}
-        numAddresses={addresses.length}
-      />
-      {addresses.length < 3 && (
-        <TouchableOpacity
-          style={{
-            backgroundColor: tertiary,
-            padding: 15,
-            borderRadius: 30,
-            alignSelf: 'center',
-            marginVertical: 10,
-          }}
-          onPress={() => setShowModal(true)}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: '700',
-              color: sextenary,
-              alignSelf: 'center',
-            }}>
-            Agregar Nueva Dirección
-          </Text>
-        </TouchableOpacity>
       )}
-    </View>
+    />
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+    flex: 1,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: secondary,
+    width: 30,
+    height: 30,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default Step1;

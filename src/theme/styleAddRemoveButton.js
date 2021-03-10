@@ -9,7 +9,7 @@ export default StyleSheet.create({
     width: 100,
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   button: {

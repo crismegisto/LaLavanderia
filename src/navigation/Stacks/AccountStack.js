@@ -1,12 +1,14 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/display-name */
 import React from 'react';
-import {Platform} from 'react-native';
+import {Platform, Dimensions, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createStackNavigator} from '@react-navigation/stack';
 import Account from '../../screens/Account';
 import ShoppingCartIcon from '../../components/ShoppingCartIcon';
 import {primary, sextenary} from '../../theme/colors';
+
+let {width} = Dimensions.get('window');
 
 const Stack = createStackNavigator();
 
@@ -27,6 +29,12 @@ const AccountStack = ({navigation}) => (
       options={{
         title: 'Mi Perfil',
         headerTitleAlign: 'center',
+        headerBackground: () => (
+          <Image
+            source={require('../../assets/bubbles.png')}
+            style={{height: 85, width}}
+          />
+        ),
         headerLeft: () => (
           <Icon
             name="ios-arrow-back"

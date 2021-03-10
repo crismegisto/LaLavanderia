@@ -1,7 +1,6 @@
 import React from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ContactUs from '../components/ContactUs';
 import {sextenary} from '../theme/colors';
@@ -11,7 +10,6 @@ const Balance = () => {
 
   return (
     <View style={{flex: 1}}>
-      <Header />
       <View style={{flex: 1, marginTop: 20}}>
         <FlatList
           data={balance}
@@ -28,10 +26,10 @@ const Balance = () => {
                   padding: 15,
                   flex: 1,
                 }}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+                <Text style={{fontSize: 16, fontWeight: 'bold'}}>
                   {item.producto.producto_nombre}
                 </Text>
-                <Text style={{fontSize: 18}}>
+                <Text style={{fontSize: 16}}>
                   {item.saldo_cantidad} Unidades
                 </Text>
               </View>

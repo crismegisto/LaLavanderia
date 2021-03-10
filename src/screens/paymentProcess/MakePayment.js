@@ -23,12 +23,11 @@ import SuccessModal from '../../components/modals/SuccessModal';
 import DeclinedModal from '../../components/modals/declinedModal';
 import PaymentMethod from '../../components/PaymentMethod';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ContactUs from '../../components/ContactUs';
 import {quaternary} from '../../theme/colors';
 
-const MakePayment = ({navigation}) => {
+const MakePayment = ({navigation, route}) => {
   const dispatch = useDispatch();
 
   const [successModalVisible, setSuccessModalVisible] = useState(false);
@@ -39,13 +38,14 @@ const MakePayment = ({navigation}) => {
     setAreTermsAndConditionsAccepted,
   ] = useState(false);
 
-  const productsInCart = useSelector((state) =>
+  const productsInCart = useSelector((state) => state.productsInCart);
+  const newProductsInCart = useSelector((state) =>
     state.productsInCart.map((item) => ({
       id: item.id,
       cantidad: item.quantity,
     })),
   );
-  let productToBill = {productos: productsInCart};
+  let productToBill = {productos: newProductsInCart};
   const userUid = useSelector((state) => state.userData.user.uid);
 
   const transactionId = useSelector((state) => state.transaction[0]);
@@ -100,7 +100,6 @@ const MakePayment = ({navigation}) => {
         );
         setShowSpinnerValidator(!showSpinnerValidator);
         dispatch(saveTransaction(data.id));
-        // Alert.alert('El pago fue procesado con éxito');
       } catch (error) {
         setShowSpinnerValidator(!showSpinnerValidator);
         Alert.alert('Ocurrió un error', error.message);
@@ -114,8 +113,6 @@ const MakePayment = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <View style={{backgroundColor: 'white'}}></View>
-      <Header />
       <PaymentMethod payment={payment} />
       <>
         <Spinner
@@ -150,6 +147,39 @@ const MakePayment = ({navigation}) => {
             payment={payment}
           />
         )}
+
+        <View style={{flex: 1, justifyContent: 'center'}}>
+          {productsInCart.map((product) => (
+            <View
+              key={product.id}
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginHorizontal: 25,
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{fontSize: 14}}>{product.producto_nombre}</Text>
+                <Text style={{fontSize: 14}}>x{product.quantity}</Text>
+              </View>
+
+              <Text style={{fontSize: 14}}>
+                ${product.precios[0].precio_valor * product.quantity}
+              </Text>
+            </View>
+          ))}
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: 25,
+            }}>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>Total</Text>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>
+              ${route.params.totalToPay}
+            </Text>
+          </View>
+        </View>
+
         <View style={styles.payment}>
           <View style={styles.termsAndConditions}>
             <CheckBox
@@ -169,7 +199,7 @@ const MakePayment = ({navigation}) => {
             style={
               areTermsAndConditionsAccepted && isFormValid
                 ? styles.paymentButton
-                : styles.paymentButtonDisable
+                : {...styles.paymentButton, backgroundColor: 'gray'}
             }
             onPress={() => setShowSpinnerValidator(!showSpinnerValidator)}
             disabled={!areTermsAndConditionsAccepted && !isFormValid}>
@@ -188,9 +218,9 @@ const MakePayment = ({navigation}) => {
             navigation={navigation}
           />
         </>
+        <Footer />
+        <ContactUs />
       </KeyboardAwareScrollView>
-      <Footer />
-      <ContactUs />
     </View>
   );
 };

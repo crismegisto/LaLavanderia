@@ -3,7 +3,6 @@ import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import styles from '../theme/stylesCategories';
 import {useSelector} from 'react-redux';
 import ContactUs from '../components/ContactUs';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {secondary, sextenary} from '../theme/colors';
@@ -38,7 +37,6 @@ function Categories({navigation}) {
 
   return (
     <View style={{flex: 1, justifyContent: 'space-between'}}>
-      <Header />
       <FlatList
         data={categories}
         renderItem={renderItem}

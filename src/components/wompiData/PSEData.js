@@ -84,7 +84,23 @@ const PSEData = (props) => {
 
   return (
     <View style={styles.containerForm}>
-      <View style={{flexDirection: 'row', flex: 1}}>
+      <RNPickerSelect
+        placeholder={{
+          label: 'A continuación seleccione su banco',
+          value: null,
+          color: 'black',
+        }}
+        onValueChange={(value) => setFinancialInstitution(value)}
+        value={financialInstitution}
+        items={financialInstitutions}
+        style={{
+          inputAndroid: {
+            color: 'black',
+            height: 50,
+          },
+        }}
+      />
+      <View style={{flexDirection: 'row'}}>
         <RNPickerSelect
           placeholder={{
             label: 'Tipo Persona',
@@ -148,30 +164,14 @@ const PSEData = (props) => {
           Documento requerido
         </Text>
       )}
-      <RNPickerSelect
-        placeholder={{
-          label: 'A continuación seleccione su banco',
-          value: null,
-          color: 'black',
-        }}
-        onValueChange={(value) => setFinancialInstitution(value)}
-        value={financialInstitution}
-        items={financialInstitutions}
-        style={{
-          inputAndroid: {
-            color: 'black',
-            height: 50,
-          },
-        }}
-      />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   containerForm: {
-    flex: 1,
     alignItems: 'center',
+    marginBottom: 10,
   },
   containerInput: {
     borderWidth: 1,

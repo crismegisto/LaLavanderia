@@ -9,6 +9,7 @@ import {
 import {LiteCreditCardInput} from 'react-native-input-credit-card';
 import {useDispatch} from 'react-redux';
 import {updateWompiData} from '../../store/actions/modifyPaymentsAction';
+import {primary} from '../../theme/colors';
 
 const CreditCardData = (props) => {
   const dispatch = useDispatch();
@@ -63,13 +64,13 @@ const CreditCardData = (props) => {
   if (showActivityIndicator) {
     return (
       <View style={{flex: 1, justifyContent: 'center'}}>
-        <ActivityIndicator size="large" color="#0000ff" />
+        <ActivityIndicator size="large" color={primary} />
       </View>
     );
   }
 
   return (
-    <View style={{marginTop: 20, alignItems: 'center'}}>
+    <View style={{marginVertical: 20, alignItems: 'center'}}>
       <LiteCreditCardInput ref={CCInput} onChange={onChange} />
       <View
         style={

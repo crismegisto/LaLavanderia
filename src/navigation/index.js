@@ -11,7 +11,6 @@ import AccountStack from './Stacks/AccountStack';
 import SignIn from '../screens/authFlow/SignIn';
 import Login from '../screens/authFlow/Login';
 import SignUp from '../screens/authFlow/SignUp';
-import DataForm from '../screens/authFlow/DataForm';
 import ForgotPassword from '../screens/authFlow/ForgotPassword';
 import {useSelector, useDispatch} from 'react-redux';
 import {signIn} from '../store/actions/authAction';
@@ -93,11 +92,6 @@ function IndexNavigation() {
           <Stack.Screen
             name="SignUp"
             component={SignUp}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="DataForm"
-            component={DataForm}
             options={{headerShown: false}}
           />
           <Stack.Screen

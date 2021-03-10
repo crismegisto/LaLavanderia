@@ -8,15 +8,12 @@ import {
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import {primary, secondary, sextenary} from '../../theme/colors';
-import geocoding from '../../api/geocoding';
-import checkString from '../../utils/checkString';
 
 export default function Form(props) {
   const {control, handleSubmit, errors} = useForm();
   const firstNameInputRef = useRef();
   const lastNameInputRef = useRef();
   const phoneNumberInputRef = useRef();
-  const addressInputRef = useRef();
   const documentInputRef = useRef();
 
   return (
@@ -122,67 +119,6 @@ export default function Form(props) {
       )}
 
       <Controller
-        name="address"
-        control={control}
-        render={({onChange, onBlur, value}) => (
-          <View style={styles.formContainer}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Dirección</Text>
-            <TextInput
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              placeholder={'p. ej. Carrera 11 # 30-10'}
-              placeholderTextColor={secondary}
-              value={value}
-              ref={addressInputRef}
-              maxLength={35}
-              autoCapitalize="words"
-            />
-          </View>
-        )}
-        rules={{
-          required: {value: true, message: 'Campo requerido'},
-          validate: {
-            additionalAddress: (value) =>
-              !checkString(value) ||
-              'Por favor coloque la dirección sin complementos',
-            asyncValidate: async (value) =>
-              (await geocoding(value)) || 'Dirección no valida',
-          },
-        }}
-        onFocus={() => addressInputRef.current.focus()}
-        defaultValue=""
-      />
-      {errors.address && (
-        <Text style={{alignSelf: 'flex-end', marginRight: 20, color: 'red'}}>
-          {errors.address.message}
-        </Text>
-      )}
-
-      <Controller
-        name="complementAddress"
-        control={control}
-        render={({onChange, onBlur, value}) => (
-          <View style={styles.formContainer}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-              Detalles Dirección
-            </Text>
-            <TextInput
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              placeholder={'p. ej. Apto 401 torre 3'}
-              placeholderTextColor={secondary}
-              value={value}
-              maxLength={35}
-              autoCapitalize="words"
-            />
-          </View>
-        )}
-        defaultValue=""
-      />
-
-      <Controller
         name="document"
         control={control}
         render={({onChange, onBlur, value}) => (
@@ -218,6 +154,7 @@ export default function Form(props) {
 
       <TouchableOpacity
         style={styles.button}
+        disabled={props.isLoading}
         onPress={handleSubmit(props.onSubmit)}>
         <Text style={styles.buttonText}>CONTINUAR</Text>
       </TouchableOpacity>

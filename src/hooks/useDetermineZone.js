@@ -1,38 +1,44 @@
 import {useState, useEffect} from 'react';
-import geocoding from '../api/geocoding';
 import {getZones} from '../api/getZones';
 import {contains} from '../utils/rayCasting';
 
-const useDetermineZone = (query) => {
-  const [activeZone, setActiveZone] = useState(null);
+const useDetermineZone = (location) => {
+  const [zone, setZone] = useState(null);
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    if (!query) {
+    if (!location) {
       return;
     }
 
     const fetchData = async () => {
       setIsLoading(true);
+      setError(null);
       try {
         let zones = await getZones();
-        let location = await geocoding(query);
 
-        const filterZone = zones.filter((zone) =>
+        const filterZones = zones.filter((zone) =>
           contains(zone.zona_mapa, location.lat, location.lng),
         );
 
-        filterZone.length ? setActiveZone(filterZone) : setActiveZone(null);
-        setIsLoading(false);
+        if (filterZones.length) {
+          setZone(filterZones[0]);
+        } else {
+          throw new Error(
+            'Lo sentimos, en este momento no tenemos cobertura en tu zona.',
+          );
+        }
       } catch (err) {
-        console.log(err);
+        setError(err.message);
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, [query]);
+  }, [location]);
 
-  return {activeZone, isLoading};
+  return {zone, error, isLoading};
 };
 
 export default useDetermineZone;

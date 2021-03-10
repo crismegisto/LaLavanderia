@@ -1,13 +1,12 @@
 import React from 'react';
 import {View, FlatList, TouchableOpacity, Text, Image} from 'react-native';
 import {useSelector} from 'react-redux';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ContactUs from '../../components/ContactUs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {secondary, sextenary} from '../../theme/colors';
 
-const BeforePayment = ({navigation}) => {
+const BeforePayment = ({navigation, route}) => {
   const categories = useSelector((state) => state.categories.categoriesData);
   const renderItem = ({item, index}) => (
     <TouchableOpacity
@@ -39,13 +38,12 @@ const BeforePayment = ({navigation}) => {
       style={{
         flex: 1,
       }}>
-      <Header />
       <Text
         style={{
           fontSize: 18,
           fontWeight: 'bold',
-          marginTop: 10,
-          marginBottom: 15,
+          marginTop: 15,
+          marginBottom: 5,
           marginLeft: 15,
         }}>
         ¿Desea comprar algo más?
@@ -69,7 +67,11 @@ const BeforePayment = ({navigation}) => {
           width: '40%',
           alignSelf: 'center',
         }}
-        onPress={() => navigation.navigate('MakePayment')}>
+        onPress={() =>
+          navigation.navigate('MakePayment', {
+            totalToPay: route.params.totalToPay,
+          })
+        }>
         <Text
           style={{
             fontSize: 18,

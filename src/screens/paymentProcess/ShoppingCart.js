@@ -3,7 +3,6 @@ import {View, TouchableOpacity, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 import ProductsInShoppingCart from '../../components/ProductsInShoppingCart';
 import styles from '../../theme/styleShoppingCart';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ContactUs from '../../components/ContactUs';
 
@@ -27,14 +26,14 @@ const ShoppingCart = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Header />
       <View style={styles.productsContainer}>
         <ProductsInShoppingCart />
       </View>
       <View style={styles.footer}>
-        <Text style={styles.totalText}>Total: {totalToPay}</Text>
+        <Text style={styles.totalText}>Total: ${totalToPay}</Text>
         <TouchableOpacity
           style={styles.nextButton}
+          disabled={productsInCart.length === 0}
           onPress={() => navigation.navigate('BeforePayment', {totalToPay})}>
           <Text style={styles.nextButtonText}>Continuar</Text>
         </TouchableOpacity>

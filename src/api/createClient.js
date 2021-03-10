@@ -11,6 +11,13 @@ export const createClient = async (data) => {
   );
 
   if (response.status === 200) {
-    return await response.json();
+    const {success} = await response.json();
+    if (!success) {
+      throw new Error('Lo sentimos, el usuario no ha sido creado.');
+    } else {
+      return true;
+    }
   }
+
+  throw new Error('Lo sentimos, ha ocurrido un error interno.');
 };

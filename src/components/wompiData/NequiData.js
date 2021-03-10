@@ -84,7 +84,6 @@ const NequiData = (props) => {
 
 const styles = StyleSheet.create({
   containerForm: {
-    flex: 1,
     alignItems: 'center',
   },
   containerInput: {
@@ -96,7 +95,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 20,
+    marginVertical: 20,
   },
   textInput: {fontSize: 16},
 });

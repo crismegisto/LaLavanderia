@@ -6,12 +6,7 @@ const initialState = {
     lastName: null,
     email: '',
     phoneNumber: null,
-    address1: null,
-    complementAddress1: null,
-    address2: null,
-    complementAddress2: null,
-    address3: null,
-    complementAddress3: null,
+    addresses: [],
     documentType: 'C.C.',
     document: null,
     code: 1,
@@ -61,6 +56,40 @@ const userDataReducer = (state = initialState, action) => {
       return {
         ...state,
         user: {...state.user, ...action.userData},
+      };
+    case 'ADD_ADDRESS':
+      const newArray = state.user.addresses.map((address) => ({
+        ...address,
+        isSelected: false,
+      }));
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          addresses: [...newArray, action.address],
+        },
+      };
+    case 'REMOVE_ADDRESS':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          addresses: state.user.addresses.filter(
+            (address) => address.id !== action.id,
+          ),
+        },
+      };
+    case 'CHANGE_SELECTED_ADDRESS':
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          addresses: state.user.addresses.map((address) =>
+            address.id === action.id
+              ? {...address, isSelected: true}
+              : {...address, isSelected: false},
+          ),
+        },
       };
     case 'ADD_PHONE_NUMBER':
       return {

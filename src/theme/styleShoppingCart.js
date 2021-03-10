@@ -6,6 +6,7 @@ export default StyleSheet.create({
   },
   productsContainer: {
     flex: 3,
+    marginTop: 20,
   },
   footer: {
     flexDirection: 'row',

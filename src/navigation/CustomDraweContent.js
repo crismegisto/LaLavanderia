@@ -8,10 +8,9 @@ import {
 } from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import {Avatar, Title, Drawer} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles from '../theme/styleDrawer';
-import {primary, sextenary} from '../theme/colors';
+import {sextenary} from '../theme/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import {signOut} from '../store/actions/authAction';
 import auth from '@react-native-firebase/auth';
@@ -57,7 +56,7 @@ function CustomDrawerContent(props) {
             <DrawerItem
               icon={() => (
                 <Image
-                  source={require('../assets/icons-drawer/perfil.png')}
+                  source={require('../assets/icons-drawer/icono_saldo.png')}
                   style={{width: 45, height: 45}}
                 />
               )}
@@ -70,7 +69,7 @@ function CustomDrawerContent(props) {
             <DrawerItem
               icon={() => (
                 <Image
-                  source={require('../assets/icons-drawer/perfil.png')}
+                  source={require('../assets/icons-drawer/icono_perfil.png')}
                   style={{width: 45, height: 45}}
                 />
               )}
@@ -83,7 +82,7 @@ function CustomDrawerContent(props) {
             <DrawerItem
               icon={() => (
                 <Image
-                  source={require('../assets/icons-drawer/precios.png')}
+                  source={require('../assets/icons-drawer/icono_precio.png')}
                   style={{width: 45, height: 45}}
                 />
               )}

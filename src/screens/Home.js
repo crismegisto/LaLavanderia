@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, StatusBar, Image} from 'react-native';
 import Carousel from '../components/Carousel';
@@ -8,9 +7,8 @@ import {fetchCategories} from '../store/actions/categoriesAction';
 import {fetchBalance} from '../store/actions/balanceAction';
 import {useDispatch, useSelector} from 'react-redux';
 import ContactUs from '../components/ContactUs';
-import {primary} from '../theme/colors';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
+import AddAddress from '../components/address/AddAddress';
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
@@ -22,54 +20,64 @@ const Home = ({navigation}) => {
     dispatch(fetchBalance(uid));
   }, [dispatch, uid, transactionId]);
 
+  const [showAddAddress, setShowAddAddress] = useState(false);
+  const {addresses} = useSelector((state) => state.userData.user);
+  useEffect(() => {
+    if (!addresses.length) {
+      setShowAddAddress(true);
+    }
+  }, [addresses]);
+
   return (
-    <View style={{flex: 1, alignItems: 'stretch'}}>
-      <StatusBar backgroundColor={primary} barStyle="light-content" />
-      <Header />
-      <View style={{flex: 3}}>
+    <View style={styles.container}>
+      {/* <StatusBar backgroundColor={primary} barStyle="light-content" /> */}
+      <StatusBar translucent backgroundColor="transparent" />
+      <AddAddress
+        visible={showAddAddress}
+        hideModal={() => setShowAddAddress(false)}
+      />
+      <View style={styles.containerCarousel}>
         <Carousel />
       </View>
-      <View style={{flex: 1}}>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}>
+      <View style={styles.containerButtons}>
+        <View style={styles.rowOfButtons}>
           <TouchableOpacity
-            style={styles.bottom}
+            style={styles.button}
             onPress={() => navigation.navigate('Categories')}>
-            <Text style={styles.textBottom}>Comprar</Text>
+            <Image
+              source={require('../assets/icons-home/icono_comprar.png')}
+              style={styles.icon}
+            />
+            <Text style={styles.textButton}>Comprar</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.bottom}
+            style={styles.button}
             onPress={() => navigation.navigate('Schedule')}>
             <Image
-              source={require('../assets/icons-home/agenda_servicio.png')}
-              style={{width: 35, height: 35, marginRight: 7}}
+              source={require('../assets/icons-home/icono_agendar.png')}
+              style={styles.icon}
             />
-            <Text style={styles.textBottom}>Agendar</Text>
+            <Text style={styles.textButton}>Agendar</Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-around',
-          }}>
+        <View style={styles.rowOfButtons}>
           <TouchableOpacity
-            style={styles.bottom}
+            style={styles.button}
             onPress={() => navigation.navigate('BalanceStack')}>
-            <Text style={styles.textBottom}>Ver Saldos</Text>
+            <Image
+              source={require('../assets/icons-home/icono_saldo.png')}
+              style={styles.icon}
+            />
+            <Text style={styles.textButton}>Saldos</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.bottom}
+            style={styles.button}
             onPress={() => setModalVisible(true)}>
             <Image
-              source={require('../assets/icons-home/precios.png')}
-              style={{width: 35, height: 35, marginRight: 7}}
+              source={require('../assets/icons-home/icono_precio.png')}
+              style={styles.icon}
             />
-            <Text style={styles.textBottom}>Precios</Text>
+            <Text style={styles.textButton}>Precios</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -6,30 +6,28 @@ import Step2 from '../components/schedulingSteps/Step2';
 import Step3 from '../components/schedulingSteps/Step3';
 import Step4 from '../components/schedulingSteps/Step4';
 import Step5 from '../components/schedulingSteps/Step5';
-import Step6 from '../components/schedulingSteps/Step6';
 import styles from '../theme/styleSchedule';
 import {useSelector} from 'react-redux';
 import {sendSchedule} from '../api/collectionAndDelivery/sendScheduleApi';
-import Header from '../components/Header';
-import useDetermineZone from '../hooks/useDetermineZone';
-import Spinner from 'react-native-loading-spinner-overlay';
-import {quaternary} from '../theme/colors';
+import {primary} from '../theme/colors';
+import AddAddress from '../components/address/AddAddress';
 
 const Schedule = ({navigation}) => {
   const uid = useSelector((state) => state.userData.user.uid);
+  const [showAddAddress, setShowAddAddress] = useState(false);
+  const {addresses} = useSelector((state) => state.userData.user);
+  useEffect(() => {
+    if (!addresses.length) {
+      setShowAddAddress(true);
+    }
+  }, [addresses]);
 
-  const [address, setAddress] = useState(null);
-  const {activeZone, isLoading} = useDetermineZone(address);
   const [productsToUse, setProductsToUse] = useState([]);
   const [collectionDate, setCollectionDate] = useState({});
   const [collectionHour, setCollectionHour] = useState('');
   const [deliveryDate, setDeliveryDate] = useState({});
   const [deliveryHour, setDeliveryHour] = useState('');
   const [observations, setObservations] = useState('');
-
-  const getAddress = (data) => {
-    setAddress(data);
-  };
 
   const getProductsToUse = (products) => {
     setProductsToUse(products);
@@ -58,22 +56,21 @@ const Schedule = ({navigation}) => {
   const [steps, setSteps] = useState([]);
   useEffect(() => {
     let array = [
-      <Step1 getAddress={getAddress} />,
-      <Step2 getProductsToUse={getProductsToUse} />,
-      <Step3
+      <Step1 getProductsToUse={getProductsToUse} />,
+      // <Step1 getAddress={getAddress} />,
+      <Step2
         getCollectionDate={getCollectionDate}
-        zone={activeZone}
         getCollectionHour={getCollectionHour}
+        showModal={() => setShowAddAddress(true)}
       />,
-      <Step4
+      <Step3
         getDeliveryDate={getDeliveryDate}
-        zone={activeZone}
         collectionDate={collectionDate}
         getDeliveryHour={getDeliveryHour}
+        showModal={() => setShowAddAddress(true)}
       />,
-      <Step5 getObservations={getObservations} />,
-      <Step6
-        address={address}
+      <Step4 getObservations={getObservations} />,
+      <Step5
         productsToUse={productsToUse}
         collectionDate={collectionDate}
         collectionHour={collectionHour}
@@ -87,7 +84,6 @@ const Schedule = ({navigation}) => {
   }, [
     collectionDate,
     collectionHour,
-    activeZone,
     deliveryDate,
     deliveryHour,
     observations,
@@ -104,25 +100,14 @@ const Schedule = ({navigation}) => {
   }, [animation, progress]);
 
   const width = animation.interpolate({
-    inputRange: [0, 5],
-    outputRange: ['17%', '100%'],
+    inputRange: [0, 4],
+    outputRange: ['20%', '100%'],
     extrapolate: 'clamp',
   });
 
   const onContinue = () => {
     switch (progress) {
       case 0:
-        if (activeZone && !isLoading) {
-          setProgress(progress + 1);
-        } else {
-          Alert.alert(
-            'Lo sentimos',
-            'En este momento no tenemos cobertura en tu zona,' +
-              'por favor seleccione otra dirección.',
-          );
-        }
-        break;
-      case 1:
         if (productsToUse.length > 0) {
           setProgress(progress + 1);
         } else {
@@ -132,7 +117,7 @@ const Schedule = ({navigation}) => {
           );
         }
         break;
-      case 2:
+      case 1:
         if (Object.keys(collectionDate).length > 0) {
           setProgress(progress + 1);
         } else {
@@ -142,7 +127,7 @@ const Schedule = ({navigation}) => {
           );
         }
         break;
-      case 3:
+      case 2:
         if (Object.keys(deliveryDate).length > 0) {
           setProgress(progress + 1);
         } else {
@@ -152,10 +137,10 @@ const Schedule = ({navigation}) => {
           );
         }
         break;
-      case 4:
+      case 3:
         setProgress(progress + 1);
         break;
-      case 5:
+      case 4:
         if (Object.keys(deliveryDate).length > 0) {
           const products = productsToUse.map((product) => ({
             id: product.producto.id,
@@ -181,19 +166,15 @@ const Schedule = ({navigation}) => {
 
   return (
     <View style={{flex: 1}}>
-      <Header />
-      <Spinner
-        visible={isLoading}
-        textContent={'Validando zona...'}
-        textStyle={{color: quaternary}}
-        color={quaternary}
+      <AddAddress
+        visible={showAddAddress}
+        hideModal={() => setShowAddAddress(false)}
       />
-
       <View style={styles.stepsContainer}>
         <View style={styles.progressBar}>
-          <Animated.View style={{backgroundColor: '#02193E', width}} />
+          <Animated.View style={{backgroundColor: primary, width}} />
         </View>
-        <Text style={styles.stepCounter}>Paso {progress + 1} de 6</Text>
+        <Text style={styles.stepCounter}>Paso {progress + 1} de 5</Text>
         <View style={styles.productsContainer}>{steps[progress]}</View>
       </View>
 

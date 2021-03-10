@@ -5,25 +5,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const SuccessModal = (props) => {
   const accept = () => {
     props.modalVisible();
-    props.navigation.navigate('HomeStack');
+    props.navigation.navigate('HomeStack', {screen: 'Home'});
   };
 
   return (
-    <View style={styles.centeredView}>
-      <Modal animationType="slide" transparent={true} visible={props.openModal}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Icon name="check-circle" size={50} color="white" />
+    <Modal animationType="slide" transparent={true} visible={props.openModal}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Icon name="check-circle" size={50} color="white" />
 
-            <Text style={styles.successTextStyle}>Transacción Exitosa</Text>
+          <Text style={styles.successTextStyle}>Transacción Exitosa</Text>
 
-            <TouchableHighlight style={styles.openButton} onPress={accept}>
-              <Text style={styles.textStyle}>Continuar</Text>
-            </TouchableHighlight>
-          </View>
+          <TouchableHighlight style={styles.openButton} onPress={accept}>
+            <Text style={styles.textStyle}>Continuar</Text>
+          </TouchableHighlight>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 
