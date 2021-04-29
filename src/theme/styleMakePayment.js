@@ -34,4 +34,9 @@ export default StyleSheet.create({
     color: 'white',
     alignSelf: 'center',
   },
+  productInCart : {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 25,
+  },
 });

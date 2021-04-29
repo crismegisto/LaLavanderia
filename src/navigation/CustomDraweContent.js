@@ -17,7 +17,7 @@ import auth from '@react-native-firebase/auth';
 
 function CustomDrawerContent(props) {
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.userData);
+  const user = useSelector((state) => state.user);
 
   const onSignOut = async () => {
     try {
@@ -41,11 +41,11 @@ function CustomDrawerContent(props) {
             style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
             <Avatar.Image
               source={{
-                uri: userData.user.photo,
+                uri: user.photo,
               }}
               size={70}
             />
-            <Title style={styles.title}>{userData.user.displayName}</Title>
+            <Title style={styles.title}>{user.displayName}</Title>
           </View>
         </ImageBackground>
 
@@ -78,19 +78,6 @@ function CustomDrawerContent(props) {
               onPress={() => {
                 props.navigation.navigate('AccountStack');
               }}
-            />
-            <DrawerItem
-              icon={() => (
-                <Image
-                  source={require('../assets/icons-drawer/icono_precio.png')}
-                  style={{width: 45, height: 45}}
-                />
-              )}
-              labelStyle={styles.titleItem}
-              label="Precios"
-              // onPress={() => {
-              //   props.navigation.navigate('AccountStack');
-              // }}
             />
           </Drawer.Section>
         </DrawerContentScrollView>

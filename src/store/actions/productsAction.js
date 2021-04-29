@@ -1,20 +1,25 @@
-export const toggleProduct = (product) => ({
-  type: 'TOGGLE_PRODUCT',
+export const addProduct = (product) => ({
+  type: 'ADD_PRODUCT',
   product,
 });
 
-export const addUnitToProduct = (id) => ({
-  type: 'ADD_UNIT_TO_PRODUCT',
+export const addProductUnit = (id) => ({
+  type: 'ADD_PRODUCT_UNIT',
   id,
 });
 
-export const removeUnitToProduct = (id) => ({
-  type: 'REMOVE_UNIT_TO_PRODUCT',
+export const removeProductUnit = (id) => ({
+  type: 'REMOVE_PRODUCT_UNIT',
   id,
 });
 
-export const eliminateProduct = (id) => ({
-  type: 'ELIMINATE_PRODUCT',
+export const deleteProduct = (id) => ({
+  type: 'DELETE_PRODUCT',
+  id,
+});
+
+export const deleteMProduct = (id) => ({
+  type: 'DELETE_M_PRODUCT',
   id,
 });
 

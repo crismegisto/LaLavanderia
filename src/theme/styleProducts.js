@@ -9,6 +9,12 @@ export default StyleSheet.create({
     flex: 6,
     alignItems: 'stretch',
   },
+  description: {
+    margin: 7,
+    alignSelf: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   containerRenderItem: {
     flex: 1,
     marginVertical: 5,
@@ -17,6 +23,11 @@ export default StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'space-around',
     flexDirection: 'row',
+  },
+  productDetails: {
+    alignItems: 'center',
+    marginVertical: 15,
+    justifyContent: 'space-around',
   },
   image: {
     height: 100,
@@ -61,7 +72,7 @@ export default StyleSheet.create({
     elevation: 2,
   },
   buyButton: {
-    backgroundColor: '#02193E',
+    backgroundColor: primary,
     paddingVertical: 12,
     borderRadius: 30,
     marginBottom: 15,

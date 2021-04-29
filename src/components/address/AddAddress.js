@@ -33,7 +33,7 @@ const AddAddress = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [label, setLabel] = useState({id: 3, name: 'Otro', icon: 'random'});
 
-  const {addresses} = useSelector((state) => state.userData.user);
+  const {addresses} = useSelector((state) => state.user);
   const onFinishSearch = (dataAddress, location, error, loading) => {
     setIsLoading(loading);
     if (error) {

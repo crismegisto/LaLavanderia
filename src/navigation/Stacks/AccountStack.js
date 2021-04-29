@@ -41,7 +41,7 @@ const AccountStack = ({navigation}) => (
             size={35}
             color={sextenary}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
-            onPress={() => navigation.navigate('HomeStack')}
+            onPress={() => navigation.navigate('Main')}
           />
         ),
         headerRight: () => <ShoppingCartIcon {...navigation} />,

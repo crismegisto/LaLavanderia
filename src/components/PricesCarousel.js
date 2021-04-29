@@ -41,12 +41,14 @@ const PricesCarousel = (props) => {
             justifyContent: 'center',
             backgroundColor: 'rgba(39,34,65,0.8)',
           }}>
-          <Carousel
-            data={categories}
-            renderItem={renderItem}
-            sliderWidth={width}
-            itemWidth={width - 70}
-          />
+          {categories && (
+            <Carousel
+              data={categories}
+              renderItem={renderItem}
+              sliderWidth={width}
+              itemWidth={width - 70}
+            />
+          )}
           <View style={{flex: 2, alignItems: 'center'}}>
             <TouchableOpacity style={styles.bottom} onPress={props.hideModal}>
               <Text style={styles.textBottom}>Cerrar</Text>

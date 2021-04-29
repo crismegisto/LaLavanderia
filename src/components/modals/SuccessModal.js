@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const SuccessModal = (props) => {
   const accept = () => {
     props.modalVisible();
-    props.navigation.navigate('HomeStack', {screen: 'Home'});
+    props.navigation.navigate('Home');
   };
 
   return (

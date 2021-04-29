@@ -5,14 +5,14 @@ import {modifyPaymentMethod} from '../store/actions/modifyPaymentsAction';
 import styles from '../theme/stylePaymentMethod';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const PaymentMethod = (props) => {
+const PaymentMethod = () => {
   const dispatch = useDispatch();
 
   const changePaymentMethod = (paymentId) => {
     dispatch(modifyPaymentMethod(paymentId));
   };
 
-  const payment = useSelector((state) => state.userData.paymentMethods);
+  const payment = useSelector((state) => state.paymentMethods);
 
   return (
     <View style={styles.container}>

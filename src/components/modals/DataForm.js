@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Alert} from 'react-native';
-import Form from '../../components/authFlow/Form';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {View, Text, Alert, Modal} from 'react-native';
+import Form from '../Form';
 import styles from '../../theme/styleDataForm';
 import {useDispatch, useSelector} from 'react-redux';
-import {createClient} from '../../api/createClient';
-import {fillOutData} from '../../store/actions/authAction';
+import createCustomer from '../../api/createCustomer';
+import {fillInTheData} from '../../store/actions/authAction';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {quaternary} from '../../theme/colors';
 
-const DataForm = () => {
+const DataForm = ({isVisible}) => {
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.userData.user);
+  const user = useSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({});
 
@@ -21,29 +20,28 @@ const DataForm = () => {
       let newData = {
         cliente_nombres: formData.firstName,
         cliente_apellidos: formData.lastName,
-        cliente_email: userData.email,
+        cliente_email: user.email,
         cliente_telefono: formData.phoneNumber,
-        cliente_direccion1: 'null',
         cliente_tipo_documento: 'C.C.',
         cliente_documento: formData.document,
         cliente_codigo: '1',
-        cliente_redes: userData.uid,
+        cliente_redes: user.uid,
       };
       try {
-        await createClient(newData);
-        let displayName = userData.displayName
-          ? userData.displayName
+        await createCustomer(newData);
+        let displayName = user.displayName
+          ? user.displayName
           : formData.firstName.split(' ')[0] + formData.lastName.split(' ')[0];
         dispatch(
-          fillOutData({
+          fillInTheData({
             displayName,
             firstName: formData.firstName,
             lastName: formData.lastName,
             phoneNumber: formData.phoneNumber,
-            // address1: 'null',
             document: formData.document,
           }),
         );
+        setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
         Alert.alert(err.message);
@@ -61,20 +59,20 @@ const DataForm = () => {
   };
 
   return (
-    <View style={styles.container1}>
-      <Spinner
-        visible={isLoading}
-        textContent={'Cargando...'}
-        textStyle={{color: quaternary}}
-        color={quaternary}
-      />
-      <KeyboardAwareScrollView>
-        <View style={styles.formContainer}>
-          <Text style={styles.formTitle}>DETALLES DE CONTACTO</Text>
+    <Modal animationType="slide" transparent visible={!isVisible}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Spinner
+            visible={isLoading}
+            textContent={'Cargando...'}
+            textStyle={{color: quaternary}}
+            color={quaternary}
+          />
+          <Text style={styles.formTitle}>Datos Para Facturación</Text>
           <Form onSubmit={onSubmit} isLoading={isLoading} />
         </View>
-      </KeyboardAwareScrollView>
-    </View>
+      </View>
+    </Modal>
   );
 };
 

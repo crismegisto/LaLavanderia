@@ -1,6 +1,6 @@
 import {ipAddress} from '../keys';
 
-export const createClient = async (data) => {
+const createCustomer = async (data) => {
   const response = await fetch(
     `http://${ipAddress}/lalavanderia/public/api/clientes`,
     {
@@ -21,3 +21,5 @@ export const createClient = async (data) => {
 
   throw new Error('Lo sentimos, ha ocurrido un error interno.');
 };
+
+export default createCustomer;

@@ -6,7 +6,7 @@ import ShoppingCart from '../../screens/paymentProcess/ShoppingCart';
 import BeforePayment from '../../screens/paymentProcess/BeforePayment';
 import MakePayment from '../../screens/paymentProcess/MakePayment';
 import PDFReader from '../../screens/PDFReader';
-import {primary, sextenary} from '../../theme/colors';
+import {sextenary} from '../../theme/colors';
 
 let {width} = Dimensions.get('window');
 

@@ -8,6 +8,14 @@ import {sextenary} from '../theme/colors';
 const Balance = () => {
   const balance = useSelector((state) => state.balance.balanceUser);
 
+  if (!balance) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <Text style={{fontSize: 20, fontWeight: 'bold'}}>Sin Saldos</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 1, marginTop: 20}}>
@@ -26,9 +34,16 @@ const Balance = () => {
                   padding: 15,
                   flex: 1,
                 }}>
-                <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                  {item.producto.producto_nombre}
-                </Text>
+                {item.saldo_ancho ? (
+                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                    {item.producto.producto_nombre} {item.saldo_ancho}cm x{' '}
+                    {item.saldo_largo}cm
+                  </Text>
+                ) : (
+                  <Text style={{fontSize: 16, fontWeight: 'bold'}}>
+                    {item.producto.producto_nombre}
+                  </Text>
+                )}
                 <Text style={{fontSize: 16}}>
                   {item.saldo_cantidad} Unidades
                 </Text>

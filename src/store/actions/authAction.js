@@ -1,16 +1,6 @@
-export const signIn = (userData) => ({
-  type: 'SIGN_IN',
-  userData,
-});
-
-export const fillOutData = (userData) => ({
-  type: 'FILL_OUT_DATA',
-  userData,
-});
-
-export const addPhoneNumber = (phoneNumber) => ({
-  type: 'ADD_PHONE_NUMBER',
-  phoneNumber,
+export const fillInTheData = (userData) => ({
+  type: 'FILL_IN_THE_DATA',
+  payload: userData,
 });
 
 export const signOut = () => ({

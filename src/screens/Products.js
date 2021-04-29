@@ -9,90 +9,91 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  toggleProduct,
-  addUnitToProduct,
-  removeUnitToProduct,
-  eliminateProduct,
+  addProduct,
+  addProductUnit,
+  removeProductUnit,
+  deleteProduct,
 } from '../store/actions/productsAction';
 import styles from '../theme/styleProducts';
 import AddRemoveButton from '../components/AddRemoveButton';
 import {primary, sextenary} from '../theme/colors';
-import MeasurementsModal from '../components/modals/MeasurementsModal';
+import MeasurementsProducts from '../components/products/MeasurementsProducts';
 
-const Products = (props) => {
+const Products = ({navigation, route}) => {
   const dispatch = useDispatch();
 
-  const [showMeasurements, setShowMeasurements] = useState(false);
-
   const categories = useSelector(
-    (state) => state.categories.categoriesData[props.route.params.index],
+    (state) => state.categories.categoriesData[route.params.index],
   );
   const products = useSelector(
-    (state) =>
-      state.categories.categoriesData[props.route.params.index].productos,
+    (state) => state.categories.categoriesData[route.params.index].productos,
   );
   const productsInCart = useSelector((state) => state.productsInCart);
 
   useEffect(() => {
-    props.navigation.setOptions({title: props.route.params.title});
-  }, [props.navigation, props.route.params.title]);
+    navigation.setOptions({title: route.params.title});
+  }, [navigation, route.params.title]);
 
   const [localProducts, setLocalProducts] = useState([]); //Products that will be used temporarily and locally
   useEffect(() => {
-    const newAdditional = products.map((item) => ({
-      ...item,
-      quantity: 0,
-    }));
+    const newAdditional = products.map((product) => {
+      const productInCart = productsInCart.find(
+        (item) => item.id === product.id,
+      );
+
+      return productInCart
+        ? {
+            ...product,
+            quantity: productInCart.quantity,
+          }
+        : {
+            ...product,
+            quantity: 0,
+          };
+    });
+
     setLocalProducts(newAdditional);
-  }, [products]);
+  }, [products, productsInCart]);
 
-  const toggleAddButton = (product, index) => {
-    console.log(product);
-    if (product.producto_medida) {
-      setShowMeasurements(true);
-    }
-    const filterProductById = productsInCart.filter(
-      (item) => item.id === product.id,
-    );
-
+  const AddProduct = (product, index) => {
     let copyLocalProducts = localProducts.map((item) => ({...item}));
     copyLocalProducts[index].quantity = 1;
     setLocalProducts(copyLocalProducts);
 
     //Check if the product exists in the shopping cart
-    if (filterProductById.length > 0) {
-      return dispatch(addUnitToProduct(product));
+    if (productsInCart.some((item) => item.id === product.id)) {
+      return dispatch(addProductUnit(product));
     }
 
-    dispatch(toggleProduct(copyLocalProducts[index]));
+    dispatch(addProduct(copyLocalProducts[index]));
   };
 
   const add = (index) => {
     let copyLocalProducts = localProducts.map((item) => ({...item}));
     copyLocalProducts[index].quantity++;
     setLocalProducts(copyLocalProducts);
-    dispatch(addUnitToProduct(copyLocalProducts[index].id));
+    dispatch(addProductUnit(copyLocalProducts[index].id));
   };
 
   const remove = (product, index) => {
-    const filterProductById = productsInCart.filter(
+    const filterProductById = productsInCart.find(
       (item) => item.id === product.id,
-    )[0];
+    );
 
     let copyLocalProducts = localProducts.map((item) => ({...item}));
     copyLocalProducts[index].quantity--;
     setLocalProducts(copyLocalProducts);
 
     if (filterProductById.quantity === 1) {
-      return dispatch(eliminateProduct(filterProductById.id));
+      return dispatch(deleteProduct(filterProductById.id));
     }
 
-    dispatch(removeUnitToProduct(copyLocalProducts[index].id));
+    dispatch(removeProductUnit(copyLocalProducts[index].id));
   };
 
   const buy = () => {
     if (productsInCart.length) {
-      props.navigation.navigate('PaymentProcessStack');
+      navigation.navigate('ShoppingCart');
     } else {
       Alert.alert('Carrito Vacío', 'Por favor agregue productos');
     }
@@ -100,89 +101,78 @@ const Products = (props) => {
 
   return (
     <View style={styles.container}>
-      <MeasurementsModal
-        visible={showMeasurements}
-        hideModal={() => setShowMeasurements(false)}
-      />
       <View style={styles.containerList}>
         {categories.categoria_descripcion && (
-          <Text
-            style={{
-              margin: 7,
-              alignSelf: 'center',
-              fontSize: 16,
-              fontWeight: 'bold',
-            }}>
+          <Text style={styles.description}>
             {categories.categoria_descripcion}
           </Text>
         )}
-        <FlatList
-          persistentScrollbar
-          data={localProducts}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({item, index}) => (
-            <TouchableOpacity
-              style={
-                item.quantity > 0
-                  ? {...styles.containerRenderItem, backgroundColor: primary}
-                  : styles.containerRenderItem
-              }
-              disabled={item.quantity > 0}
-              onPress={() => toggleAddButton(item, index)}>
-              <></>
-              <View
-                style={{
-                  alignItems: 'center',
-                  marginVertical: 15,
-                  justifyContent: 'space-around',
-                }}>
-                <Text
-                  style={
-                    item.quantity > 0
-                      ? [styles.textTitle, {color: sextenary}]
-                      : styles.textTitle
-                  }>
-                  {item.producto_nombre}
-                </Text>
-                <Text
-                  style={
-                    item.quantity > 0
-                      ? [styles.textSubTitle, {color: sextenary}]
-                      : styles.textSubTitle
-                  }>
-                  Precio: ${item.precios[0].precio_valor}
-                </Text>
-                {item.quantity > 0 ? (
-                  !props.route.params.title.toLowerCase().includes('planes') ? (
-                    <AddRemoveButton
-                      quantity={item.quantity}
-                      remove={() => remove(item, index)}
-                      add={() => add(index)}
-                      textColor={sextenary}
-                    />
+        {!products.some((product) => product.producto_medida) ? (
+          <FlatList
+            persistentScrollbar
+            data={localProducts}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({item, index}) => (
+              <TouchableOpacity
+                style={
+                  item.quantity > 0
+                    ? {...styles.containerRenderItem, backgroundColor: primary}
+                    : styles.containerRenderItem
+                }
+                disabled={item.quantity > 0}
+                onPress={() => AddProduct(item, index)}>
+                <></>
+                <View style={styles.productDetails}>
+                  <Text
+                    style={
+                      item.quantity > 0
+                        ? [styles.textTitle, {color: sextenary}]
+                        : styles.textTitle
+                    }>
+                    {item.producto_nombre}
+                  </Text>
+                  <Text
+                    style={
+                      item.quantity > 0
+                        ? [styles.textSubTitle, {color: sextenary}]
+                        : styles.textSubTitle
+                    }>
+                    Precio: ${item.precios[0].precio_valor}
+                  </Text>
+                  {item.quantity > 0 ? (
+                    !route.params.title.toLowerCase().includes('planes') ? (
+                      <AddRemoveButton
+                        quantity={item.quantity}
+                        remove={() => remove(item, index)}
+                        add={() => add(index)}
+                        textColor={sextenary}
+                      />
+                    ) : (
+                      <AddRemoveButton
+                        quantity={item.quantity}
+                        remove={() => remove(item, index)}
+                        textColor={sextenary}
+                      />
+                    )
+                  ) : item.producto_descripcion ? (
+                    <Text>{item.producto_descripcion}</Text>
                   ) : (
-                    <AddRemoveButton
-                      quantity={item.quantity}
-                      remove={() => remove(item, index)}
-                      textColor={sextenary}
-                    />
-                  )
-                ) : item.producto_descripcion ? (
-                  <Text>{item.producto_descripcion}</Text>
-                ) : (
-                  <></>
-                )}
-              </View>
-              <></>
-              <Image
-                style={styles.image}
-                source={{
-                  uri: item.producto_imagen_ruta,
-                }}
-              />
-            </TouchableOpacity>
-          )}
-        />
+                    <></>
+                  )}
+                </View>
+                <></>
+                <Image
+                  style={styles.image}
+                  source={{
+                    uri: item.producto_imagen_ruta,
+                  }}
+                />
+              </TouchableOpacity>
+            )}
+          />
+        ) : (
+          <MeasurementsProducts products={products} />
+        )}
       </View>
 
       <TouchableOpacity style={styles.buyButton} onPress={buy}>

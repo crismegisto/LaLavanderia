@@ -1,6 +1,6 @@
 export const addAddress = (address) => ({
   type: 'ADD_ADDRESS',
-  address,
+  payload: address,
 });
 
 export const removeAddress = (id) => ({

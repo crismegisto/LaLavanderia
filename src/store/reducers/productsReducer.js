@@ -1,17 +1,19 @@
 const productsReducer = (state = [], action) => {
   switch (action.type) {
-    case 'TOGGLE_PRODUCT':
+    case 'ADD_PRODUCT':
       return [...state, action.product];
-    case 'ADD_UNIT_TO_PRODUCT':
+    case 'ADD_PRODUCT_UNIT':
       return state.map((item) =>
         action.id === item.id ? {...item, quantity: ++item.quantity} : item,
       );
-    case 'REMOVE_UNIT_TO_PRODUCT':
+    case 'REMOVE_PRODUCT_UNIT':
       return state.map((item) =>
         action.id === item.id ? {...item, quantity: --item.quantity} : item,
       );
-    case 'ELIMINATE_PRODUCT':
+    case 'DELETE_PRODUCT':
       return state.filter((item) => item.id !== action.id);
+    case 'DELETE_M_PRODUCT':
+      return state.filter((item) => item.auxiliaryId !== action.id);
     case 'REMOVE_ALL_PRODUCTS':
       return [];
     default:

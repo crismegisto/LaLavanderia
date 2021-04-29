@@ -26,6 +26,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import Footer from '../../components/Footer';
 import ContactUs from '../../components/ContactUs';
 import {quaternary} from '../../theme/colors';
+import DataForm from '../../components/modals/DataForm';
 
 const MakePayment = ({navigation, route}) => {
   const dispatch = useDispatch();
@@ -43,10 +44,12 @@ const MakePayment = ({navigation, route}) => {
     state.productsInCart.map((item) => ({
       id: item.id,
       cantidad: item.quantity,
+      ancho: item.width,
+      largo: item.length,
     })),
   );
   let productToBill = {productos: newProductsInCart};
-  const userUid = useSelector((state) => state.userData.user.uid);
+  const {uid, document} = useSelector((state) => state.user);
 
   const transactionId = useSelector((state) => state.transaction[0]);
   useEffect(() => {
@@ -66,7 +69,7 @@ const MakePayment = ({navigation, route}) => {
           break;
         case 'APPROVED':
           dispatch(deleteTransaction());
-          generateBill(userUid, productToBill);
+          generateBill(uid, productToBill);
           setSuccessModalVisible(!successModalVisible);
           dispatch(removeAllProducts());
           break;
@@ -85,7 +88,7 @@ const MakePayment = ({navigation, route}) => {
   }, [declinedModalVisible, dispatch, successModalVisible, transactionId]);
 
   const payment = useSelector((state) =>
-    state.userData.paymentMethods.filter((item) => item.active),
+    state.paymentMethods.filter((item) => item.active),
   );
   const [showSpinnerValidator, setShowSpinnerValidator] = useState(false);
   useEffect(() => {
@@ -113,7 +116,8 @@ const MakePayment = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <PaymentMethod payment={payment} />
+      <DataForm isVisible={Boolean(document)} />
+      <PaymentMethod />
       <>
         <Spinner
           visible={showSpinnerValidator}
@@ -151,12 +155,8 @@ const MakePayment = ({navigation, route}) => {
         <View style={{flex: 1, justifyContent: 'center'}}>
           {productsInCart.map((product) => (
             <View
-              key={product.id}
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginHorizontal: 25,
-              }}>
+              key={product.id + (product.auxiliaryId || 0)}
+              style={styles.productInCart}>
               <View style={{flexDirection: 'row'}}>
                 <Text style={{fontSize: 14}}>{product.producto_nombre}</Text>
                 <Text style={{fontSize: 14}}>x{product.quantity}</Text>
@@ -167,12 +167,7 @@ const MakePayment = ({navigation, route}) => {
               </Text>
             </View>
           ))}
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginHorizontal: 25,
-            }}>
+          <View style={styles.productInCart}>
             <Text style={{fontWeight: 'bold', fontSize: 16}}>Total</Text>
             <Text style={{fontWeight: 'bold', fontSize: 16}}>
               ${route.params.totalToPay}

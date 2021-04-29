@@ -24,6 +24,7 @@ const Step4 = (props) => {
           fontSize: 16,
           borderRadius: 30,
           width: '90%',
+          height: 200,
           alignSelf: 'center',
           borderColor: 'black',
           borderWidth: 2,

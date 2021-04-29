@@ -7,18 +7,22 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  container1: {
+  centeredView: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(39,34,65,0.8)',
   },
-  formContainer: {
-    marginTop: 20,
+  modalView: {
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    width: '95%',
   },
   formTitle: {
     alignSelf: 'center',
-    marginLeft: 30,
     marginBottom: 10,
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
   },
   buttonBack: {

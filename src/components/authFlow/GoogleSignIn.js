@@ -43,7 +43,7 @@ const SignInGoogle = () => {
         source={require('../../assets/google-icon.png')}
         style={styles.googleIcon}
       />
-      <Text style={styles.googleButtonText}>Iniciar Sesión con Google</Text>
+      <Text style={styles.googleButtonText}>Continuar con Google</Text>
     </TouchableOpacity>
   );
 };

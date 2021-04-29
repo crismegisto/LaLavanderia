@@ -18,10 +18,8 @@ const Carousel = () => {
   const [images, setImages] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const coverPage = await getCoverPage();
-        setImages(coverPage);
-      } catch (error) {}
+      const coverPage = await getCoverPage();
+      setImages(coverPage);
     };
 
     fetchData();

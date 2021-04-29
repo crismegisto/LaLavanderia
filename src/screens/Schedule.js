@@ -13,9 +13,8 @@ import {primary} from '../theme/colors';
 import AddAddress from '../components/address/AddAddress';
 
 const Schedule = ({navigation}) => {
-  const uid = useSelector((state) => state.userData.user.uid);
   const [showAddAddress, setShowAddAddress] = useState(false);
-  const {addresses} = useSelector((state) => state.userData.user);
+  const {uid, addresses} = useSelector((state) => state.user);
   useEffect(() => {
     if (!addresses.length) {
       setShowAddAddress(true);

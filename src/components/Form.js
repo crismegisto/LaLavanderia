@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import {primary, secondary, sextenary} from '../../theme/colors';
+import {primary, secondary, sextenary} from '../theme/colors';
 
 export default function Form(props) {
   const {control, handleSubmit, errors} = useForm();
@@ -23,7 +23,7 @@ export default function Form(props) {
         control={control}
         render={({onChange, onBlur, value}) => (
           <View style={styles.formContainer}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Nombres</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold'}}>Nombres</Text>
             <TextInput
               style={styles.input}
               onBlur={onBlur}
@@ -40,7 +40,7 @@ export default function Form(props) {
         rules={{
           required: {value: true, message: 'Campo requerido'},
           validate: (value) =>
-            !value.match(/[^a-zA-Z]+$/) || 'Por favor ingrese sólo letras',
+            !value.match(/[^a-zA-Z\s]+$/) || 'Por favor ingrese sólo letras',
         }}
         onFocus={() => firstNameInputRef.current.focus()}
         defaultValue=""
@@ -56,7 +56,7 @@ export default function Form(props) {
         control={control}
         render={({onChange, onBlur, value}) => (
           <View style={styles.formContainer}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Apellidos</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold'}}>Apellidos</Text>
             <TextInput
               style={styles.input}
               onBlur={onBlur}
@@ -73,7 +73,7 @@ export default function Form(props) {
         rules={{
           required: {value: true, message: 'Campo requerido'},
           validate: (value) =>
-            !value.match(/[^a-zA-Z]+$/) || 'Por favor ingrese sólo letras',
+            !value.match(/[^a-zA-Z\s]+$/) || 'Por favor ingrese sólo letras',
         }}
         onFocus={() => lastNameInputRef.current.focus()}
         defaultValue=""
@@ -89,7 +89,7 @@ export default function Form(props) {
         control={control}
         render={({onChange, onBlur, value}) => (
           <View style={styles.formContainer}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Teléfono</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold'}}>Teléfono</Text>
             <TextInput
               style={styles.input}
               keyboardType="number-pad"
@@ -123,7 +123,7 @@ export default function Form(props) {
         control={control}
         render={({onChange, onBlur, value}) => (
           <View style={styles.formContainer}>
-            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Documento</Text>
+            <Text style={{fontSize: 14, fontWeight: 'bold'}}>Documento</Text>
             <TextInput
               style={styles.input}
               keyboardType="number-pad"
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: sextenary,
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

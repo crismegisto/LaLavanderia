@@ -11,7 +11,7 @@ let {width} = Dimensions.get('window');
 
 const Stack = createStackNavigator();
 
-const AccountStack = ({navigation}) => (
+const BalanceStack = ({navigation}) => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
@@ -40,7 +40,7 @@ const AccountStack = ({navigation}) => (
             size={35}
             color={sextenary}
             style={[Platform.OS == 'ios' ? {bottom: 4} : null, {padding: 10}]}
-            onPress={() => navigation.navigate('HomeStack')}
+            onPress={() => navigation.navigate('Main')}
           />
         ),
       }}
@@ -48,4 +48,4 @@ const AccountStack = ({navigation}) => (
   </Stack.Navigator>
 );
 
-export default AccountStack;
+export default BalanceStack;

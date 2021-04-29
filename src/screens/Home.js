@@ -4,24 +4,39 @@ import Carousel from '../components/Carousel';
 import PricesCarousel from '../components/PricesCarousel';
 import styles from '../theme/styleHome';
 import {fetchCategories} from '../store/actions/categoriesAction';
-import {fetchBalance} from '../store/actions/balanceAction';
+import {fillInTheData} from '../store/actions/authAction';
 import {useDispatch, useSelector} from 'react-redux';
 import ContactUs from '../components/ContactUs';
 import Footer from '../components/Footer';
 import AddAddress from '../components/address/AddAddress';
+import getCustomer from '../api/getCustomer';
 
 const Home = ({navigation}) => {
   const dispatch = useDispatch();
+  const {uid, addresses} = useSelector((state) => state.user);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const results = await getCustomer(uid);
+        dispatch(fillInTheData(results));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (uid) {
+      fetchData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [modalVisible, setModalVisible] = useState(false);
-  const uid = useSelector((state) => state.userData.user.uid);
   const transactionId = useSelector((state) => state.transaction[0]);
   useEffect(() => {
     dispatch(fetchCategories());
-    dispatch(fetchBalance(uid));
-  }, [dispatch, uid, transactionId]);
+  }, [dispatch, transactionId]);
 
   const [showAddAddress, setShowAddAddress] = useState(false);
-  const {addresses} = useSelector((state) => state.userData.user);
   useEffect(() => {
     if (!addresses.length) {
       setShowAddAddress(true);
@@ -63,7 +78,7 @@ const Home = ({navigation}) => {
         <View style={styles.rowOfButtons}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate('BalanceStack')}>
+            onPress={() => navigation.navigate('Balance')}>
             <Image
               source={require('../assets/icons-home/icono_saldo.png')}
               style={styles.icon}

@@ -1,26 +1,50 @@
 import {StyleSheet} from 'react-native';
+import {sextenary} from './colors';
 
 export default StyleSheet.create({
-  categorie: {
+  container: {
     flex: 1,
-    margin: 5,
-    borderRadius: 20,
-    height: 170,
+    justifyContent: 'space-between',
   },
-  ImageBackground: {
-    flex: 1,
-    resizeMode: 'cover',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+  separator: {
+    height: 5,
+    backgroundColor: sextenary,
+  },
+  containerCategory: {
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  image: {
+    width: 60,
+    height: 60,
   },
   text: {
-    backgroundColor: 'white',
-    marginRight: 15,
-    marginBottom: 15,
-    borderRadius: 10,
-    width: 100,
+    fontSize: 16,
     fontWeight: 'bold',
-    fontSize: 18,
     textAlign: 'center',
+  },
+  beforePaymentTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 15,
+    marginBottom: 5,
+    marginLeft: 15,
+  },
+  noThanksButton: {
+    backgroundColor: '#02193E',
+    paddingVertical: 12,
+    borderRadius: 30,
+    marginBottom: 10,
+    marginTop: 10,
+    width: '40%',
+    alignSelf: 'center',
+  },
+  noThanksText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: 'white',
+    alignSelf: 'center',
   },
 });

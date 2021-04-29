@@ -51,7 +51,11 @@ const Step1 = (props) => {
             mode="outlined"
             label={item.saldo_cantidad + '  disponibles'}
             disabled={true}
-            value={item.currentValue + '  ' + item.producto.producto_nombre}
+            value={
+              item.saldo_ancho
+                ? `${item.currentValue} ${item.producto.producto_nombre} ${item.saldo_ancho}cm x ${item.saldo_largo}cm`
+                : `${item.currentValue}  ${item.producto.producto_nombre}`
+            }
             theme={{colors: {disabled: primary, text: primary}}}
           />
           <View style={styles.buttonContainer}>

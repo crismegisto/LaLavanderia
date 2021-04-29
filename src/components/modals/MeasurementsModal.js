@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Modal,
   Text,
@@ -7,22 +7,43 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {addProduct} from '../../store/actions/productsAction';
+import {useDispatch} from 'react-redux';
 
 const MeasurementsModal = (props) => {
-  const [widthRug, setWidthRug] = useState(null);
-  const [lengthRug, setLengthRug] = useState(null);
+  const dispatch = useDispatch();
+  const [width, setWidth] = useState(null);
+  const [length, setLength] = useState(null);
 
   const accept = () => {
-    props.hideModal();
+    let area = (width * length) / 10000;
+    if (area) {
+      let newProduct = {
+        ...props.product,
+        width,
+        length,
+        precios: [{precio_valor: (width * length * 21000) / 10000}],
+        quantity: 1,
+        auxiliaryId: Math.floor(Math.random() * 10000 + 1000),
+      };
+      dispatch(addProduct(newProduct));
+      props.hideModal();
+    } else {
+      Alert.alert(
+        'Error en las medidas',
+        'Por favor introduzca medidas diferentes de 0',
+      );
+    }
   };
 
   return (
     <Modal animationType="slide" transparent={true} visible={props.visible}>
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <TouchableOpacity style={styles.closeIcon}>
+          <TouchableOpacity style={styles.closeIcon} onPress={props.hideModal}>
             <Icon name="times" size={30} color="black" />
           </TouchableOpacity>
           <View
@@ -44,8 +65,8 @@ const MeasurementsModal = (props) => {
                   borderWidth: 1,
                 }}
                 keyboardType="numeric"
-                onChangeText={(text) => setWidthRug(text)}
-                value={widthRug}
+                onChangeText={(text) => setWidth(text)}
+                value={width}
               />
               <Text style={{color: 'black', marginLeft: 5}}>cm</Text>
             </View>
@@ -70,13 +91,13 @@ const MeasurementsModal = (props) => {
                   borderWidth: 1,
                 }}
                 keyboardType="numeric"
-                onChangeText={(text) => setLengthRug(text)}
-                value={lengthRug}
+                onChangeText={(text) => setLength(text)}
+                value={length}
               />
               <Text style={{color: 'black', marginLeft: 5}}>cm</Text>
             </View>
           </View>
-          <Text>Valor a pagar ${(widthRug * lengthRug * 21000) / 10000}</Text>
+          <Text>Valor a pagar ${(width * length * 21000) / 10000}</Text>
           <TouchableHighlight style={styles.openButton} onPress={accept}>
             <Text style={styles.textStyle}>Aceptar</Text>
           </TouchableHighlight>

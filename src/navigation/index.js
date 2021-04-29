@@ -4,8 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomDrawerContent from './CustomDraweContent';
-import HomeStack from './Stacks/HomeStack';
-import PaymentProcessStack from './Stacks/PaymentProcessStack';
+import MainStack from './Stacks/MainStack';
 import BalanceStack from './Stacks/BalanceStack';
 import AccountStack from './Stacks/AccountStack';
 import SignIn from '../screens/authFlow/SignIn';
@@ -13,7 +12,7 @@ import Login from '../screens/authFlow/Login';
 import SignUp from '../screens/authFlow/SignUp';
 import ForgotPassword from '../screens/authFlow/ForgotPassword';
 import {useSelector, useDispatch} from 'react-redux';
-import {signIn} from '../store/actions/authAction';
+import {fillInTheData} from '../store/actions/authAction';
 import {saveNavigation} from '../store/actions/navigationAction';
 import auth from '@react-native-firebase/auth';
 import PDFReader from '../screens/PDFReader';
@@ -24,6 +23,25 @@ const Drawer = createDrawerNavigator();
 
 function IndexNavigation() {
   const dispatch = useDispatch();
+  const {uid} = useSelector((state) => state.user);
+  useEffect(() => {
+    function onAuthStateChanged(user) {
+      if (user && !uid) {
+        dispatch(
+          fillInTheData({
+            displayName: user.displayName,
+            email: user.email,
+            photo: user.photoURL,
+            uid: user.uid,
+          }),
+        );
+      }
+    }
+
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, [dispatch, uid]);
+
   const initialStateRedux = useSelector((state) => state.navigation[0]);
   const transactionId = useSelector((state) => state.transaction[0]);
   const [isReady, setIsReady] = useState(false);
@@ -42,26 +60,6 @@ function IndexNavigation() {
     }
   }, [initialState, initialStateRedux, isReady, transactionId]);
 
-  const {document} = useSelector((state) => state.userData.user);
-  useEffect(() => {
-    function onAuthStateChanged(user) {
-      console.log(user);
-      if (user && !document) {
-        dispatch(
-          signIn({
-            displayName: user.displayName,
-            email: user.email,
-            photo: user.photoURL,
-            uid: user.uid,
-          }),
-        );
-      }
-    }
-
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, [dispatch, document]);
-
   if (!isReady) {
     return <Loader />;
   }
@@ -72,7 +70,7 @@ function IndexNavigation() {
       onStateChange={(state) => {
         dispatch(saveNavigation(state));
       }}>
-      {document === null ? (
+      {uid === null ? (
         <Stack.Navigator>
           <Stack.Screen
             name="SignIn"
@@ -107,21 +105,15 @@ function IndexNavigation() {
             itemStyle: {marginVertical: 30},
           }}
           drawerType="slide"
-          initialRouteName="HomeStack"
           drawerContent={(props) => <CustomDrawerContent {...props} />}>
-          <Drawer.Screen name="HomeStack" component={HomeStack} />
+          <Drawer.Screen name="Main" component={MainStack} />
           <Drawer.Screen
-            name="BalanceStack"
+            name="Balance"
             component={BalanceStack}
             options={{swipeEnabled: false}}
           />
           <Drawer.Screen
-            name="PaymentProcessStack"
-            component={PaymentProcessStack}
-            options={{swipeEnabled: false}}
-          />
-          <Drawer.Screen
-            name="AccountStack"
+            name="Account"
             component={AccountStack}
             options={{swipeEnabled: false}}
           />

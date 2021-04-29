@@ -7,6 +7,6 @@ export const getCoverPage = async () => {
     let results = await response.json();
     return results;
   } catch (err) {
-    console.log(err.message);
+    return [];
   }
 };

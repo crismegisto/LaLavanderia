@@ -24,7 +24,7 @@ const ShoppingCartIcon = (props) => {
 
   const goToPay = () => {
     if (productsInCart.length) {
-      props.navigate('PaymentProcessStack');
+      props.navigate('ShoppingCart');
     } else {
       Alert.alert('Carrito Vacío', 'Por favor agregue productos');
     }
